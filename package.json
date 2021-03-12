@@ -2,10 +2,10 @@
   "name": "102_MERN_UndongTracker",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.ts",
   "scripts": {
-    "start": "node server/server.js",
-    "server": "nodemon server/server.js"
+    "start": "node server/server.ts",
+    "server": "nodemon server/server.ts"
   },
   "keywords": [],
   "author": "",
