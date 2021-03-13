@@ -1,0 +1,133 @@
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Icon,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Spacer,
+  Text,
+} from "@chakra-ui/react";
+import { ChevronDownIcon } from "@chakra-ui/icons";
+import * as React from "react";
+import { FaDumbbell } from "react-icons/fa";
+
+const Layout: React.FC = ({ children }) => {
+  return (
+    <Box position="relative">
+      <Flex display={{ base: "none", sm: "none", md: "block" }}>
+        <Box
+          w={{ lg: "15%", md: "25%" }}
+          bg="blue.200"
+          h="100vh"
+          position="fixed"
+          left="0"
+          top="0"
+          p={8}
+        >
+          <Flex justify="center" align="center" color="blue.700">
+            <Icon
+              w={8}
+              h={8}
+              as={FaDumbbell}
+              transform="rotate(-30deg)"
+              mr={2}
+            />
+            <Heading fontSize="xl">Undong Tracker</Heading>
+          </Flex>
+          <Text
+            _hover={{ transform: "rotate(3deg)" }}
+            mt={8}
+            fontSize="xl"
+            color="blue.700"
+            fontWeight="semibold"
+          >
+            Hi User
+          </Text>
+          <Text
+            _hover={{ transform: "rotate(-3deg)" }}
+            fontSize="xl"
+            my={4}
+            color="blue.700"
+          >
+            Dein Profil
+          </Text>
+          <Text
+            _hover={{ transform: "rotate(2.3deg)" }}
+            fontSize="xl"
+            my={4}
+            color="blue.700"
+          >
+            Der Stärkste im Raum
+          </Text>
+          <Text
+            _hover={{ transform: "rotate(4deg)" }}
+            fontSize="xl"
+            my={4}
+            color="blue.700"
+          >
+            Volumen-Junkie
+          </Text>
+          <Text
+            _hover={{ transform: "rotate(-1deg)" }}
+            fontSize="xl"
+            my={4}
+            color="blue.700"
+          >
+            Logout
+          </Text>
+        </Box>
+        <Box w={{ lg: "85%", md: "75%" }} ml="auto" p={8}>
+          <Box>{children}</Box>
+        </Box>
+      </Flex>
+      {/* Mobile view screen */}
+      <Box display={{ base: "block", md: "none" }}>
+        <Box position="sticky" top="0" bg="blue.200" p={4}>
+          <Flex w="90%" mx="auto" align="center">
+            <Flex align="center" color="blue.700">
+              <Icon
+                w={8}
+                h={8}
+                as={FaDumbbell}
+                transform="rotate(-30deg)"
+                mr={2}
+              />
+              <Heading fontSize="lg">Undong Tracker</Heading>
+            </Flex>
+            <Spacer />
+            {/* sandbox glitch */}
+            <Text>Hi User</Text>
+
+            {/* <Menu>
+              <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+                User
+              </MenuButton>
+              <MenuList>
+                <MenuItem>Dein Profil</MenuItem>
+                <MenuItem>Der Stärkste im Raum</MenuItem>
+                <MenuItem>Volumen-Junkie</MenuItem>
+                <MenuItem>Logout</MenuItem>
+              </MenuList>
+            </Menu> */}
+          </Flex>
+        </Box>
+        {/* Children */}
+        <Box p={4}>{children}</Box>
+      </Box>
+      <Box position="fixed" bottom="0" left="50%" transform="translateX(-50%)">
+        <Text fontSize={{ base: "md", md: "xl" }} whiteSpace="nowrap">
+          Made with{" "}
+          <span role="img" aria-label="blaues herz">
+            💙
+          </span>{" "}
+          by MKT {new Date().getFullYear()}
+        </Text>
+      </Box>
+    </Box>
+  );
+};
+export default Layout;
