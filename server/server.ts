@@ -5,8 +5,10 @@ import colors from "colors";
 import User from "./models/User";
 
 // Routes
+import userRoutes from "./routes/users";
 
 // Middlewares
+import { notFound, errorHandler } from "./middlewares/errorMiddleware";
 
 // Dotenv config
 import "dotenv/config";
@@ -36,8 +38,11 @@ app.get("/", async (req, res) => {
 });
 
 // Routing
+app.use("/api/a1/users", userRoutes);
 
 // Error Middlewares
+app.use(notFound);
+app.use(errorHandler);
 
 // Port Running
 const PORT = process.env.PORT || 5000;
