@@ -14,8 +14,3 @@ export const createExValidator = [
       "Unterer Rücken",
     ]),
 ];
-
-export const loginValidator = [
-  check("email", "Eine E-Mail Adresse ist nötig").notEmpty().isEmail(),
-  check("password", "Ein Password ist nötig").notEmpty().isLength({ min: 6 }),
-];

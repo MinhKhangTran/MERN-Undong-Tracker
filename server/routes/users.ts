@@ -12,12 +12,12 @@ import {
 import { runValidation } from "../validators";
 
 // Init Router
-const route = express.Router();
+const router = express.Router();
 // Register
-route.post("/register", registerValidator, runValidation, register);
+router.route("/register").post(registerValidator, runValidation, register);
 // Login
-route.post("/login", loginValidator, runValidation, login);
+router.route("/login").post(loginValidator, runValidation, login);
 // Get logged user
-route.get("/me", protect, getLoggedUser);
+router.route("/me").get(protect, getLoggedUser);
 
-export default route;
+export default router;

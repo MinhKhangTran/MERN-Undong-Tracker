@@ -1,19 +1,40 @@
 import express, { Request, Response } from "express";
 // controllers
-import { createNewExercise } from "../controllers/exercises";
+import {
+  createNewExercise,
+  getAllExercises,
+  getExerciseById,
+  updateExercise,
+  deleteExercise,
+  getExerciseByCategory,
+} from "../controllers/exercises";
 // middlewares
 import { protect } from "../middlewares/authMiddleware";
 
 // validators
 import {
   createExValidator,
-  //   loginValidator,
+  filterCategoryValidator,
 } from "../validators/exerciseValidators";
 import { runValidation } from "../validators";
 
 // router init
-const route = express.Router();
-// create a new exercise
-route.post("/", protect, createExValidator, runValidation, createNewExercise);
+const router = express.Router();
+// create a new exercise,get all Exercises
+router
+  .route("/")
+  .post(protect, createExValidator, runValidation, createNewExercise)
+  .get(protect, getAllExercises);
 
-export default route;
+// get, update and delete an exercise by ID
+router
+  .route("/:id")
+  .get(protect, getExerciseById)
+  .put(protect, createExValidator, runValidation, updateExercise)
+  .delete(protect, deleteExercise);
+// Get exercises by category
+router
+  .route("/category")
+  .post(protect, filterCategoryValidator, runValidation, getExerciseByCategory);
+
+export default router;
