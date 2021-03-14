@@ -1,6 +1,34 @@
 import mongoose, { Schema, Document } from "mongoose";
+import { IExercise } from "./Exercise";
+import { IUser } from "./User";
 
-const workoutSchema = new mongoose.Schema(
+export interface IWorkout extends Document {
+  name: string;
+  user: IUser;
+  username: string;
+  exercises: [
+    {
+      exercise: IExercise;
+      exerciseName: string;
+      exerciseKategory:
+        | "Brust"
+        | "Arme"
+        | "Schulter"
+        | "Beine"
+        | "Bauch"
+        | "Rücken"
+        | "Unterer Rücken";
+      sätze: [
+        {
+          gewicht: number;
+          wdh: number;
+        }
+      ];
+    }
+  ];
+}
+
+const workoutSchema: Schema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -30,19 +58,11 @@ const workoutSchema = new mongoose.Schema(
           type: String,
           required: true,
         },
-        gewicht: {
-          type: Number,
-          default: 0,
-        },
-        sets: {
-          type: Number,
-          default: 0,
-        },
-        reps: [
+        sätze: [
           {
-            satz: {
+            gewicht: {
               type: Number,
-              required: true,
+              default: 0,
             },
             wdh: {
               type: Number,
@@ -53,8 +73,8 @@ const workoutSchema = new mongoose.Schema(
       },
     ],
   },
-  { timestapms: true }
+  { timestamps: true }
 );
 
-const Workout = mongoose.model("Workout", workoutSchema);
+const Workout = mongoose.model<IWorkout>("Workout", workoutSchema);
 export default Workout;

@@ -12,8 +12,6 @@ export interface IExercise extends Document {
     | "Bauch"
     | "Rücken"
     | "Unterer Rücken";
-  sets: number;
-  reps: any[];
 }
 
 const exerciseSchema: Schema = new mongoose.Schema(
