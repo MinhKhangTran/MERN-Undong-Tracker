@@ -6,6 +6,8 @@ import User from "./models/User";
 
 // Routes
 import userRoutes from "./routes/users";
+import exerciseRoutes from "./routes/exercises";
+import workoutRoutes from "./routes/workouts";
 
 // Middlewares
 import { notFound, errorHandler } from "./middlewares/errorMiddleware";
@@ -39,6 +41,8 @@ app.get("/", async (req, res) => {
 
 // Routing
 app.use("/api/a1/users", userRoutes);
+app.use("/api/a1/exercises", exerciseRoutes);
+app.use("/api/a1/workouts", workoutRoutes);
 
 // Error Middlewares
 app.use(notFound);
