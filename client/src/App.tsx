@@ -50,7 +50,7 @@ const App = () => {
         {routes.map((route, index) => {
           return (
             <Route key={index} path={route.path} exact={route.exact}>
-              {route.component}
+              <route.component />
             </Route>
           );
         })}
