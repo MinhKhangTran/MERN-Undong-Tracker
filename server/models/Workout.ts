@@ -8,6 +8,7 @@ export interface IWorkout extends Document {
   username: string;
   exercises: [
     {
+      _id: string;
       exercise: IExercise;
       exerciseName: string;
       exerciseKategory:
