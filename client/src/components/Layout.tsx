@@ -10,12 +10,49 @@ import {
   MenuList,
   Spacer,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import * as React from "react";
 import { FaDumbbell } from "react-icons/fa";
+import { useHistory } from "react-router-dom";
+
+// Redux
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../store";
+import { clearToast } from "../features/toast/toastSlice";
 
 const Layout: React.FC = ({ children }) => {
+  const { msg, type } = useSelector((state: RootState) => state.toast);
+  const { userInfo } = useSelector((state: RootState) => state.users);
+  const dispatch = useDispatch();
+  const toast = useToast();
+  const history = useHistory();
+  React.useEffect(() => {
+    if (type === "success") {
+      toast({
+        title: "Erfolg",
+        description: msg,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+        position: "top",
+      });
+      dispatch(clearToast());
+    }
+    if (type === "error") {
+      toast({
+        title: "Fehler",
+        description: msg,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        position: "top",
+      });
+      dispatch(clearToast());
+    }
+    // eslint-disable-next-line
+  }, [type, msg, dispatch]);
   return (
     <Box position="relative">
       <Flex display={{ base: "none", sm: "none", md: "block" }}>
@@ -100,9 +137,9 @@ const Layout: React.FC = ({ children }) => {
             </Flex>
             <Spacer />
             {/* sandbox glitch */}
-            <Text>Hi User</Text>
+            {/* <Text>Hi User</Text> */}
 
-            {/* <Menu>
+            <Menu>
               <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
                 User
               </MenuButton>
@@ -112,7 +149,7 @@ const Layout: React.FC = ({ children }) => {
                 <MenuItem>Volumen-Junkie</MenuItem>
                 <MenuItem>Logout</MenuItem>
               </MenuList>
-            </Menu> */}
+            </Menu>
           </Flex>
         </Box>
         {/* Children */}

@@ -19,12 +19,12 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 // Redux
 import { useSelector, useDispatch } from "react-redux";
-// import { register } from "./userSlice";
-// import { RootState } from "../../store";
+import { register } from "./userSlice";
+import { RootState } from "../../store";
 
 const Register = () => {
   const dispatch = useDispatch();
-  // const { userInfo, loading } = useSelector((state: RootState) => state.users);
+  const { userInfo, loading } = useSelector((state: RootState) => state.users);
   const history = useHistory();
   const [showPW, setShowPW] = React.useState(false);
   const formik = useFormik({
@@ -37,16 +37,16 @@ const Register = () => {
         .min(6, "mindestens 6 Zeichen!"),
     }),
     onSubmit: (daten, { resetForm }) => {
-      console.log(daten);
-      // dispatch(register(daten));
+      // console.log(daten);
+      dispatch(register(daten));
       resetForm();
     },
   });
-  // React.useEffect(() => {
-  //   if (userInfo?._id.length !== 0) {
-  //     history.push("/");
-  //   }
-  // }, [history, userInfo]);
+  React.useEffect(() => {
+    if (userInfo?._id.length !== 0) {
+      history.push("/");
+    }
+  }, [history, userInfo]);
   return (
     <Box
       bgGradient="linear(to-l,orange.50,orange.100)"
@@ -138,7 +138,7 @@ const Register = () => {
           <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
         </FormControl>
 
-        <Button mt={8} colorScheme="orange" type="submit">
+        <Button isLoading={loading} mt={8} colorScheme="orange" type="submit">
           Anmelden
         </Button>
         <Text mt={4} fontStyle="italic">

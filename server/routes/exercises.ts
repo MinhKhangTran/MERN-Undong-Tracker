@@ -24,7 +24,7 @@ const router = express.Router();
 router
   .route("/")
   .post(protect, createExValidator, runValidation, createNewExercise)
-  .get(protect, getAllExercises);
+  .get(getAllExercises);
 
 // get, update and delete an exercise by ID
 router
