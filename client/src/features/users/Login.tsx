@@ -48,7 +48,7 @@ const Login = () => {
   }, [history, userInfo]);
   return (
     <Box
-      bgGradient="linear(to-l,orange.50,orange.100)"
+      bgGradient="linear(to-l,blue.50,blue.100)"
       p={10}
       mt={16}
       boxShadow="lg"
@@ -56,7 +56,7 @@ const Login = () => {
       w={{ base: "100%", md: "65%" }}
       mx="auto"
     >
-      <Heading bgGradient="linear(to-l,orange.400,orange.600)" bgClip="text">
+      <Heading bgGradient="linear(to-l,blue.400,blue.600)" bgClip="text">
         Login
       </Heading>
       <form onSubmit={formik.handleSubmit}>
@@ -66,10 +66,7 @@ const Login = () => {
           id="email"
           mt={4}
         >
-          <FormLabel
-            bgGradient="linear(to-l,orange.400,orange.600)"
-            bgClip="text"
-          >
+          <FormLabel bgGradient="linear(to-l,blue.400,blue.600)" bgClip="text">
             E-Mail
           </FormLabel>
           <Input
@@ -88,10 +85,7 @@ const Login = () => {
           id="password"
           mt={4}
         >
-          <FormLabel
-            bgGradient="linear(to-l,orange.400,orange.600)"
-            bgClip="text"
-          >
+          <FormLabel bgGradient="linear(to-l,blue.400,blue.600)" bgClip="text">
             Password
           </FormLabel>
           <InputGroup>
@@ -106,7 +100,7 @@ const Login = () => {
                 aria-label="hide/show password"
                 onClick={() => setShowPW(!showPW)}
                 variant="ghost"
-                colorScheme="orange"
+                colorScheme="blue"
                 h="1.75rem"
               >
                 {showPW ? <FaEyeSlash /> : <FaEye />}
@@ -116,7 +110,7 @@ const Login = () => {
           <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
         </FormControl>
 
-        <Button isLoading={loading} mt={8} colorScheme="orange" type="submit">
+        <Button isLoading={loading} mt={8} colorScheme="blue" type="submit">
           Login
         </Button>
         <Text mt={4} fontStyle="italic">
@@ -125,7 +119,7 @@ const Login = () => {
             <Text
               as="span"
               cursor="pointer"
-              bgGradient="linear(to-l,orange.400,orange.600)"
+              bgGradient="linear(to-l,blue.400,blue.600)"
               bgClip="text"
             >
               hier klicken
