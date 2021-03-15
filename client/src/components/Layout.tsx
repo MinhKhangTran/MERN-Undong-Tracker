@@ -1,3 +1,4 @@
+import * as React from "react";
 import {
   Box,
   Button,
@@ -13,9 +14,8 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import * as React from "react";
 import { FaDumbbell } from "react-icons/fa";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 // Redux
 import { useSelector, useDispatch } from "react-redux";
@@ -53,6 +53,16 @@ const Layout: React.FC = ({ children }) => {
     }
     // eslint-disable-next-line
   }, [type, msg, dispatch]);
+
+  React.useEffect(
+    () => {
+      if (userInfo?._id.length === 0) {
+        history.push("/");
+      }
+    },
+    // eslint-disable-next-line
+    [dispatch, history]
+  );
   return (
     <Box position="relative">
       <Flex display={{ base: "none", sm: "none", md: "block" }}>
@@ -82,7 +92,7 @@ const Layout: React.FC = ({ children }) => {
             color="blue.700"
             fontWeight="semibold"
           >
-            Hi User
+            <Link to="/login">Hi User</Link>
           </Text>
           <Text
             _hover={{ transform: "rotate(-3deg)" }}
@@ -140,7 +150,11 @@ const Layout: React.FC = ({ children }) => {
             {/* <Text>Hi User</Text> */}
 
             <Menu>
-              <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+              <MenuButton
+                colorScheme="blue"
+                as={Button}
+                rightIcon={<ChevronDownIcon />}
+              >
                 User
               </MenuButton>
               <MenuList>
