@@ -57,12 +57,77 @@ const Layout: React.FC = ({ children }) => {
   React.useEffect(
     () => {
       if (userInfo?._id.length === 0) {
-        history.push("/");
+        history.push("/login");
       }
     },
     // eslint-disable-next-line
     [dispatch, history]
   );
+  //if no user is log in
+  if (userInfo?._id.length === 0) {
+    return (
+      <Box position="relative">
+        <Flex display={{ base: "none", sm: "none", md: "block" }}>
+          <Box
+            w={{ lg: "15%", md: "25%" }}
+            bg="blue.200"
+            h="100vh"
+            position="fixed"
+            left="0"
+            top="0"
+            p={8}
+          >
+            <Flex justify="center" align="center" color="blue.700">
+              <Icon
+                w={8}
+                h={8}
+                as={FaDumbbell}
+                transform="rotate(-30deg)"
+                mr={2}
+              />
+              <Heading fontSize="xl">Undong Tracker</Heading>
+            </Flex>
+          </Box>
+          <Box w={{ lg: "85%", md: "75%" }} ml="auto" p={8}>
+            <Box>{children}</Box>
+          </Box>
+        </Flex>
+        <Box display={{ base: "block", md: "none" }}>
+          <Box position="sticky" top="0" bg="blue.200" p={4}>
+            <Flex w="90%" mx="auto" align="center">
+              <Flex align="center" color="blue.700">
+                <Icon
+                  w={8}
+                  h={8}
+                  as={FaDumbbell}
+                  transform="rotate(-30deg)"
+                  mr={2}
+                />
+                <Heading fontSize="lg">Undong Tracker</Heading>
+              </Flex>
+              <Spacer />
+            </Flex>
+          </Box>
+          {/* Children */}
+          <Box p={4}>{children}</Box>
+        </Box>
+        <Box
+          position="fixed"
+          bottom="0"
+          left="50%"
+          transform="translateX(-50%)"
+        >
+          <Text fontSize={{ base: "md", md: "xl" }} whiteSpace="nowrap">
+            Made with{" "}
+            <span role="img" aria-label="blaues herz">
+              💙
+            </span>{" "}
+            by MKT {new Date().getFullYear()}
+          </Text>
+        </Box>
+      </Box>
+    );
+  }
   return (
     <Box position="relative">
       <Flex display={{ base: "none", sm: "none", md: "block" }}>
@@ -92,7 +157,7 @@ const Layout: React.FC = ({ children }) => {
             color="blue.700"
             fontWeight="semibold"
           >
-            <Link to="/login">Hi User</Link>
+            <Link to="/login">Hi {userInfo?.username}</Link>
           </Text>
           <Text
             _hover={{ transform: "rotate(-3deg)" }}
@@ -146,8 +211,6 @@ const Layout: React.FC = ({ children }) => {
               <Heading fontSize="lg">Undong Tracker</Heading>
             </Flex>
             <Spacer />
-            {/* sandbox glitch */}
-            {/* <Text>Hi User</Text> */}
 
             <Menu>
               <MenuButton

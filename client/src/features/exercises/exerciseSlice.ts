@@ -16,6 +16,7 @@ export const getExercises = createAsyncThunk(
 
 // Types
 interface IExercise {
+  _id: string;
   name: string;
   category:
     | "Brust"
@@ -29,7 +30,7 @@ interface IExercise {
 interface IInitState {
   loading: boolean;
   error: any;
-  exerciseInfo: IExercise | null;
+  exerciseInfo: IExercise[] | null;
 }
 // init State
 const initialState: IInitState = {

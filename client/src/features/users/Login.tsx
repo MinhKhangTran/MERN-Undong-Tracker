@@ -43,7 +43,7 @@ const Login = () => {
   });
   React.useEffect(() => {
     if (userInfo?._id.length !== 0) {
-      history.goBack();
+      history.push("/");
     }
   }, [history, userInfo]);
   return (

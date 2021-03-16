@@ -8,6 +8,8 @@ import Home from "./pages/Home";
 import Login from "./features/users/Login";
 import Register from "./features/users/Register";
 import ErrorPage from "./pages/ErrorPage";
+import WorkoutForm from "./features/workout/WorkoutForm";
+import ExerciseForm from "./features/exercises/ExerciseForm";
 
 interface IRoute {
   path: string;
@@ -34,6 +36,18 @@ const routes: IRoute[] = [
     exact: false,
     component: Register,
     private: false,
+  },
+  {
+    path: "/workout",
+    exact: true,
+    component: WorkoutForm,
+    private: true,
+  },
+  {
+    path: "/workout/:id/exercise",
+    exact: false,
+    component: ExerciseForm,
+    private: true,
   },
   {
     path: "*",

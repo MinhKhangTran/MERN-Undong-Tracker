@@ -3,6 +3,7 @@ import asyncHandler from "express-async-handler";
 import { Request, Response } from "express";
 // import model
 import Workout from "../models/Workout";
+import Exercise from "../models/Exercise";
 
 // @desc    create a Workout
 // @route   POST api/a1/workouts/
@@ -26,6 +27,17 @@ export const createWorkout = asyncHandler(
 // @desc    get all Workouts
 // @route   GET api/a1/workouts/
 // @access  private
+export const getAllWorkouts = asyncHandler(
+  async (req: Request, res: Response) => {
+    const workouts = await Workout.find({}).sort({ createdAt: -1 });
+    if (workouts) {
+      res.status(200).json(workouts);
+    } else {
+      res.status(400);
+      throw new Error("Es gab ein Fehler beim Fetchen der Einheiten");
+    }
+  }
+);
 
 // @desc    get a workout by ID
 // @route   GET api/a1/workouts/:id
@@ -63,6 +75,17 @@ export const addExercise = asyncHandler(async (req: Request, res: Response) => {
 // @desc    get all exercises
 // @route   GET api/a1/workouts/exercise
 // @access  private
+export const getAllExercises = asyncHandler(
+  async (req: Request, res: Response) => {
+    const exercises = await Exercise.find({}).sort({ createdAt: -1 });
+    if (exercises) {
+      res.status(200).json(exercises);
+    } else {
+      res.status(400);
+      throw new Error("Es gab ein Fehler beim Fetchen der Übungen");
+    }
+  }
+);
 
 // @desc    get a exercise by ID
 // @route   GET api/a1/workouts/exercise/:id
