@@ -56,13 +56,13 @@ export const getAllWorkouts = asyncHandler(
 // ===================================================================
 
 // @desc    add an Exercise
-// @route   POST api/a1/workouts/:id/exercise
+// @route   put api/a1/workouts/:id/exercise
 // @access  private
 export const addExercise = asyncHandler(async (req: Request, res: Response) => {
   const workout = await Workout.findById(req.params.id);
-  const newExercise = req.body.exercises;
 
-  workout?.exercises.push(newExercise);
+  workout?.exercises.push(req.body);
+
   await workout?.save();
   if (workout) {
     res.status(200).json(workout);

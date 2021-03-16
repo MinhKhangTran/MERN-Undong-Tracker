@@ -21,13 +21,18 @@ import { Link, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import { clearToast } from "../features/toast/toastSlice";
+import { clearState } from "../features/workout/workoutSlice";
 
 const Layout: React.FC = ({ children }) => {
   const { msg, type } = useSelector((state: RootState) => state.toast);
   const { userInfo } = useSelector((state: RootState) => state.users);
+  const { änderung } = useSelector((state: RootState) => state.workout);
   const dispatch = useDispatch();
   const toast = useToast();
   const history = useHistory();
+  React.useEffect(() => {
+    dispatch(clearState());
+  }, [änderung]);
   React.useEffect(() => {
     if (type === "success") {
       toast({
@@ -77,16 +82,18 @@ const Layout: React.FC = ({ children }) => {
             top="0"
             p={8}
           >
-            <Flex justify="center" align="center" color="blue.700">
-              <Icon
-                w={8}
-                h={8}
-                as={FaDumbbell}
-                transform="rotate(-30deg)"
-                mr={2}
-              />
-              <Heading fontSize="xl">Undong Tracker</Heading>
-            </Flex>
+            <Link to="/">
+              <Flex justify="center" align="center" color="blue.700">
+                <Icon
+                  w={8}
+                  h={8}
+                  as={FaDumbbell}
+                  transform="rotate(-30deg)"
+                  mr={2}
+                />
+                <Heading fontSize="xl">Undong Tracker</Heading>
+              </Flex>
+            </Link>
           </Box>
           <Box w={{ lg: "85%", md: "75%" }} ml="auto" p={8}>
             <Box>{children}</Box>
@@ -95,16 +102,18 @@ const Layout: React.FC = ({ children }) => {
         <Box display={{ base: "block", md: "none" }}>
           <Box position="sticky" top="0" bg="blue.200" p={4}>
             <Flex w="90%" mx="auto" align="center">
-              <Flex align="center" color="blue.700">
-                <Icon
-                  w={8}
-                  h={8}
-                  as={FaDumbbell}
-                  transform="rotate(-30deg)"
-                  mr={2}
-                />
-                <Heading fontSize="lg">Undong Tracker</Heading>
-              </Flex>
+              <Link to="/">
+                <Flex align="center" color="blue.700">
+                  <Icon
+                    w={8}
+                    h={8}
+                    as={FaDumbbell}
+                    transform="rotate(-30deg)"
+                    mr={2}
+                  />
+                  <Heading fontSize="lg">Undong Tracker</Heading>
+                </Flex>
+              </Link>
               <Spacer />
             </Flex>
           </Box>
@@ -140,16 +149,18 @@ const Layout: React.FC = ({ children }) => {
           top="0"
           p={8}
         >
-          <Flex justify="center" align="center" color="blue.700">
-            <Icon
-              w={8}
-              h={8}
-              as={FaDumbbell}
-              transform="rotate(-30deg)"
-              mr={2}
-            />
-            <Heading fontSize="xl">Undong Tracker</Heading>
-          </Flex>
+          <Link to="/">
+            <Flex justify="center" align="center" color="blue.700">
+              <Icon
+                w={8}
+                h={8}
+                as={FaDumbbell}
+                transform="rotate(-30deg)"
+                mr={2}
+              />
+              <Heading fontSize="xl">Undong Tracker</Heading>
+            </Flex>
+          </Link>
           <Text
             _hover={{ transform: "rotate(3deg)" }}
             mt={8}
@@ -200,16 +211,18 @@ const Layout: React.FC = ({ children }) => {
       <Box display={{ base: "block", md: "none" }}>
         <Box position="sticky" top="0" bg="blue.200" p={4}>
           <Flex w="90%" mx="auto" align="center">
-            <Flex align="center" color="blue.700">
-              <Icon
-                w={8}
-                h={8}
-                as={FaDumbbell}
-                transform="rotate(-30deg)"
-                mr={2}
-              />
-              <Heading fontSize="lg">Undong Tracker</Heading>
-            </Flex>
+            <Link to="/">
+              <Flex align="center" color="blue.700">
+                <Icon
+                  w={8}
+                  h={8}
+                  as={FaDumbbell}
+                  transform="rotate(-30deg)"
+                  mr={2}
+                />
+                <Heading fontSize="lg">Undong Tracker</Heading>
+              </Flex>
+            </Link>
             <Spacer />
 
             <Menu>

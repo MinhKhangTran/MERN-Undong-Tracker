@@ -86,7 +86,7 @@ export const addExerciseToWorkout = createAsyncThunk(
           Authorization: `Bearer ${userInfo?.token}`,
         },
       };
-      const { data } = await axios.post(
+      const { data } = await axios.put(
         `/api/a1/workouts/${id}/exercise`,
         { exerciseName, exerciseKategory, exercise, sätze },
         config
@@ -105,31 +105,44 @@ export const addExerciseToWorkout = createAsyncThunk(
 // ===================================================================
 
 // Types
+interface IExercise {
+  _id: string;
+  exerciseName: string;
+  exerciseKategory: string;
+  exercise: string;
+  sätze: any[];
+}
 interface IWorkout {
   _id: string;
   name: string;
   user: string;
   username: string;
-  exercises: any[];
+  exercises: IExercise[];
   createdAt: string;
 }
 interface IInitState {
   loading: boolean;
   error: any;
   workoutInfo: IWorkout[] | null;
+  änderung: boolean;
 }
 // init State
 const initialState: IInitState = {
   loading: false,
   error: "",
   workoutInfo: null,
+  änderung: false,
 };
 
 // Slices
 export const workoutSlice = createSlice({
   name: "workout",
   initialState,
-  reducers: {},
+  reducers: {
+    clearState: (state) => {
+      state.änderung = false;
+    },
+  },
   extraReducers: (builder) => {
     // Create Workout
     builder.addCase(createWorkout.pending, (state) => {
@@ -167,7 +180,7 @@ export const workoutSlice = createSlice({
     builder.addCase(addExerciseToWorkout.fulfilled, (state, { payload }) => {
       state.loading = false;
       state.error = "";
-      state.workoutInfo = payload;
+      state.änderung = true;
     });
     builder.addCase(addExerciseToWorkout.rejected, (state, { payload }) => {
       state.loading = false;
@@ -175,3 +188,5 @@ export const workoutSlice = createSlice({
     });
   },
 });
+
+export const { clearState } = workoutSlice.actions;

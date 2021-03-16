@@ -21,7 +21,7 @@ router
   .post(protect, createWorkoutValidator, runValidation, createWorkout)
   .get(protect, getAllWorkouts);
 // add an exercise to a workout
-router.route("/:id/exercise").post(protect, addExercise);
+router.route("/:id/exercise").put(protect, addExercise);
 router.route("/exercises").get(protect, getAllExercises);
 
 export default router;
