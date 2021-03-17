@@ -104,7 +104,7 @@ export const getAllExercises = asyncHandler(
 // ===================================================================
 
 // @desc    add a Set
-// @route   POST api/a1/workouts/:workoutID/exercise/:id/set
+// @route   PUT api/a1/workouts/:workoutID/exercise/:id/set
 // @access  private
 export const addSet = asyncHandler(async (req: Request, res: Response) => {
   const workout = await Workout.findById(req.params.workoutID);
@@ -116,13 +116,10 @@ export const addSet = asyncHandler(async (req: Request, res: Response) => {
     res.status(400);
     throw new Error("Diese Übung gibt es nicht");
   }
-  const newSet = {
-    gewicht: req.body.gewicht,
-    wdh: req.body.wdh,
-  };
-  specificWorkout.sätze.push(newSet);
+
+  specificWorkout.sätze.push(req.body);
   await workout?.save();
-  if (newSet) {
+  if (workout) {
     res.status(200).json(workout);
   } else {
     res.status(400);

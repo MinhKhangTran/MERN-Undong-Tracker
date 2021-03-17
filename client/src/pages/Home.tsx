@@ -48,8 +48,12 @@ const Home = () => {
                   </Text>
                   {workout.exercises.map((exercise) => {
                     return (
-                      <Badge mr={2} colorScheme="blue">
-                        {exercise.exerciseName}
+                      <Badge key={exercise._id} mr={2} colorScheme="blue">
+                        <Link
+                          to={`/workout/${workout._id}/exercise/${exercise._id}/set`}
+                        >
+                          {exercise.exerciseName}
+                        </Link>
                       </Badge>
                     );
                   })}
@@ -57,6 +61,9 @@ const Home = () => {
               </Link>
             );
           })}
+        <Button mt={6} colorScheme="blue" variant="outline">
+          <Link to="/workout">Hier klicken um eine Einheit einzufügen</Link>
+        </Button>
       </Box>
     </Box>
   );

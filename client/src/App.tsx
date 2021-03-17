@@ -10,6 +10,7 @@ import Register from "./features/users/Register";
 import ErrorPage from "./pages/ErrorPage";
 import WorkoutForm from "./features/workout/WorkoutForm";
 import ExerciseForm from "./features/exercises/ExerciseForm";
+import SetForm from "./features/exercises/SetForm";
 
 interface IRoute {
   path: string;
@@ -45,8 +46,14 @@ const routes: IRoute[] = [
   },
   {
     path: "/workout/:id/exercise",
-    exact: false,
+    exact: true,
     component: ExerciseForm,
+    private: true,
+  },
+  {
+    path: "/workout/:WorkoutId/exercise/:id/set",
+    exact: true,
+    component: SetForm,
     private: true,
   },
   {

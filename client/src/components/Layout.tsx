@@ -22,6 +22,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import { clearToast } from "../features/toast/toastSlice";
 import { clearState } from "../features/workout/workoutSlice";
+import { logoutUser } from "../features/users/userSlice";
 
 const Layout: React.FC = ({ children }) => {
   const { msg, type } = useSelector((state: RootState) => state.toast);
@@ -66,7 +67,7 @@ const Layout: React.FC = ({ children }) => {
       }
     },
     // eslint-disable-next-line
-    [dispatch, history]
+    [dispatch, history, userInfo]
   );
   //if no user is log in
   if (userInfo?._id.length === 0) {
@@ -199,6 +200,10 @@ const Layout: React.FC = ({ children }) => {
             fontSize="xl"
             my={4}
             color="blue.700"
+            onClick={() => {
+              dispatch(logoutUser());
+            }}
+            cursor="pointer"
           >
             Logout
           </Text>
@@ -237,7 +242,14 @@ const Layout: React.FC = ({ children }) => {
                 <MenuItem>Dein Profil</MenuItem>
                 <MenuItem>Der Stärkste im Raum</MenuItem>
                 <MenuItem>Volumen-Junkie</MenuItem>
-                <MenuItem>Logout</MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    dispatch(logoutUser());
+                  }}
+                  cursor="pointer"
+                >
+                  Logout
+                </MenuItem>
               </MenuList>
             </Menu>
           </Flex>

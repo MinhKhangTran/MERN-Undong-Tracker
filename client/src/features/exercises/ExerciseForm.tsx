@@ -40,10 +40,6 @@ const ExerciseForm = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  React.useEffect(() => {
-    dispatch(getExercises());
-  }, [dispatch]);
-
   const formik = useFormik({
     initialValues: { exerciseName: "" },
     validationSchema: Yup.object({
