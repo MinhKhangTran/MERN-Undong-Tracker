@@ -3,11 +3,25 @@ import {
   Badge,
   Box,
   Button,
+  ButtonGroup,
   Flex,
   Heading,
+  IconButton,
   Spacer,
   Spinner,
   Text,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuIcon,
+  MenuCommand,
+  MenuDivider,
+  Icon,
+  Divider,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -15,6 +29,8 @@ import { RootState } from "../store";
 import { clearState, getAllWorkouts } from "../features/workout/workoutSlice";
 import Moment from "react-moment";
 import "moment/locale/de";
+import { BiDotsVerticalRounded } from "react-icons/bi";
+import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -79,14 +95,56 @@ const Home = () => {
                 {workout.exercises.map((exercise) => {
                   return (
                     <>
-                      <Text
-                        fontSize="xl"
-                        key={exercise._id}
-                        mr={2}
-                        color="blue.300"
+                      <Flex
+                        borderBottom="1px"
+                        borderColor="blue.50"
+                        aligh="center"
                       >
-                        {exercise.exerciseName}
-                      </Text>
+                        <Text
+                          fontSize="xl"
+                          key={exercise._id}
+                          mr={2}
+                          color="blue.300"
+                        >
+                          {exercise.exerciseName}
+                        </Text>
+                        <Spacer />
+
+                        <Menu>
+                          <MenuButton
+                            as={IconButton}
+                            icon={<BiDotsVerticalRounded />}
+                            variant="ghost"
+                            colorScheme="blue"
+                          ></MenuButton>
+                          <MenuList>
+                            <Flex align="center">
+                              <MenuItem>
+                                <Text>Einheit ändern</Text>
+                                <Spacer />
+                                <Icon
+                                  w={4}
+                                  h={4}
+                                  color="green.400"
+                                  as={FaEdit}
+                                />
+                              </MenuItem>
+                            </Flex>
+                            <Flex align="center">
+                              <MenuItem>
+                                <Text>Einheit löschen</Text>
+                                <Spacer />
+                                <Icon
+                                  w={4}
+                                  h={4}
+                                  color="red.400"
+                                  as={FaTrash}
+                                />
+                              </MenuItem>
+                            </Flex>
+                          </MenuList>
+                        </Menu>
+                      </Flex>
                       <Link
                         to={`/workout/${workout._id}/exercise/${exercise._id}/set`}
                       >
@@ -106,6 +164,11 @@ const Home = () => {
                     </>
                   );
                 })}
+                <Button mt={6} colorScheme="blue" variant="solid">
+                  <Link to={`/workout/${workout._id}/exercise`}>
+                    Eine weiter Übung hinzufügen
+                  </Link>
+                </Button>
               </Box>
             );
           })}
