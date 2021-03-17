@@ -109,9 +109,13 @@ export const getAllExercises = asyncHandler(
 export const addSet = asyncHandler(async (req: Request, res: Response) => {
   const workout = await Workout.findById(req.params.workoutID);
   // search for specific exercise
-  const specificWorkout = workout?.exercises.find(
-    (exercise) => exercise._id === req.params.id
-  );
+  // console.log(workout?.exercises);
+  const specificWorkout = workout?.exercises.find((exercise) => {
+    // console.log(typeof exercise._id, typeof req.params.id);
+    return exercise._id.toString() === req.params.id.toString();
+  });
+  // console.log(specificWorkout);
+
   if (!specificWorkout) {
     res.status(400);
     throw new Error("Diese Übung gibt es nicht");

@@ -51,7 +51,7 @@ const routes: IRoute[] = [
     private: true,
   },
   {
-    path: "/workout/:WorkoutId/exercise/:id/set",
+    path: "/workout/:workoutId/exercise/:id/set",
     exact: true,
     component: SetForm,
     private: true,

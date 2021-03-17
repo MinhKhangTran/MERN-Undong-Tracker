@@ -66,6 +66,7 @@ const ExerciseForm = () => {
     },
   });
   const { exerciseInfo } = useSelector((state: RootState) => state.exercise);
+  const { änderung } = useSelector((state: RootState) => state.workout);
   const selectedCategory = exerciseInfo?.find(
     (exercise) => exercise.name === formik.values.exerciseName
   );
@@ -73,6 +74,11 @@ const ExerciseForm = () => {
     dispatch(getExercises());
   }, [dispatch]);
 
+  React.useEffect(() => {
+    if (änderung) {
+      history.push("/");
+    }
+  }, [änderung]);
   return (
     <Box>
       <Heading color="blue.500" fontSize="xl">

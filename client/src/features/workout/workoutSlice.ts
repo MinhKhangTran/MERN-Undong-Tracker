@@ -91,7 +91,8 @@ export const addExerciseToWorkout = createAsyncThunk(
         { exerciseName, exerciseKategory, exercise, sätze },
         config
       );
-      console.log(data);
+      // console.log(data);
+      dispatch(toastSuccess("Die Übung wurde hinzugefügt"));
       return data;
     } catch (error) {
       // toast
@@ -103,7 +104,47 @@ export const addExerciseToWorkout = createAsyncThunk(
 // ===================================================================
 // ==========================SET======================================
 // ===================================================================
-
+// Add set to an excercise to a workout
+export const addSetExercise = createAsyncThunk(
+  "workout/addSetExercise",
+  async (
+    {
+      workoutId,
+      id,
+      gewicht,
+      wdh,
+    }: {
+      id: string;
+      workoutId: string;
+      gewicht: number;
+      wdh: number;
+    },
+    { dispatch, getState, rejectWithValue }
+  ) => {
+    try {
+      const {
+        users: { userInfo },
+      } = getState() as RootState;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo?.token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `/api/a1/workouts/${workoutId}/exercise/${id}/set`,
+        { gewicht, wdh },
+        config
+      );
+      // console.log(data);
+      dispatch(toastSuccess("Satz wurde hinzugefügt"));
+      return data;
+    } catch (error) {
+      // toast
+      dispatch(toastError(error.response.data.message));
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
 // Types
 interface IExercise {
   _id: string;
@@ -177,12 +218,28 @@ export const workoutSlice = createSlice({
     builder.addCase(addExerciseToWorkout.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(addExerciseToWorkout.fulfilled, (state, { payload }) => {
+    builder.addCase(addExerciseToWorkout.fulfilled, (state) => {
       state.loading = false;
       state.error = "";
       state.änderung = true;
     });
     builder.addCase(addExerciseToWorkout.rejected, (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    });
+    // ===================================================================
+    // ==========================SET======================================
+    // ===================================================================
+    // Add exercise to a workout
+    builder.addCase(addSetExercise.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(addSetExercise.fulfilled, (state) => {
+      state.loading = false;
+      state.error = "";
+      state.änderung = true;
+    });
+    builder.addCase(addSetExercise.rejected, (state, { payload }) => {
       state.loading = false;
       state.error = payload;
     });
