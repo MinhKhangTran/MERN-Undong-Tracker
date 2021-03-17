@@ -43,7 +43,7 @@ const WorkoutForm = () => {
       // console.log(daten);
       dispatch(createWorkout(daten));
       resetForm();
-      setAddedWorkout(true);
+      history.push("/");
     },
   });
   // React.useEffect(() => {

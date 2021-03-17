@@ -29,7 +29,9 @@ export const createWorkout = asyncHandler(
 // @access  private
 export const getAllWorkouts = asyncHandler(
   async (req: Request, res: Response) => {
-    const workouts = await Workout.find({}).sort({ createdAt: -1 });
+    const workouts = await Workout.find({ user: req.user?.id }).sort({
+      createdAt: -1,
+    });
     if (workouts) {
       res.status(200).json(workouts);
     } else {

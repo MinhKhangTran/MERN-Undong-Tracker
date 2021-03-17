@@ -121,12 +121,7 @@ const Layout: React.FC = ({ children }) => {
           {/* Children */}
           <Box p={4}>{children}</Box>
         </Box>
-        <Box
-          position="fixed"
-          bottom="0"
-          left="50%"
-          transform="translateX(-50%)"
-        >
+        <Box bottom="0" left="50%" transform="translateX(-50%)">
           <Text fontSize={{ base: "md", md: "xl" }} whiteSpace="nowrap">
             Made with{" "}
             <span role="img" aria-label="blaues herz">
@@ -257,7 +252,7 @@ const Layout: React.FC = ({ children }) => {
         {/* Children */}
         <Box p={4}>{children}</Box>
       </Box>
-      <Box position="fixed" bottom="0" left="50%" transform="translateX(-50%)">
+      <Box bottom="0" left="50%" transform="translateX(-50%)">
         <Text fontSize={{ base: "md", md: "xl" }} whiteSpace="nowrap">
           Made with{" "}
           <span role="img" aria-label="blaues herz">

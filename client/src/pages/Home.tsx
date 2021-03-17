@@ -1,9 +1,20 @@
 import * as React from "react";
-import { Badge, Box, Button, Heading, Spinner, Text } from "@chakra-ui/react";
+import {
+  Badge,
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Spacer,
+  Spinner,
+  Text,
+} from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import { clearState, getAllWorkouts } from "../features/workout/workoutSlice";
+import Moment from "react-moment";
+import "moment/locale/de";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -41,24 +52,61 @@ const Home = () => {
         {!loading &&
           workoutInfo?.map((workout) => {
             return (
-              <Link to={`/workout/${workout._id}/exercise`}>
-                <Box my={2} boxShadow="lg" p={4} key={workout._id}>
-                  <Text casing="uppercase" fontSize="xl" fontWeight="xl">
-                    {workout.name}
-                  </Text>
-                  {workout.exercises.map((exercise) => {
-                    return (
-                      <Badge key={exercise._id} mr={2} colorScheme="blue">
-                        <Link
-                          to={`/workout/${workout._id}/exercise/${exercise._id}/set`}
-                        >
-                          {exercise.exerciseName}
-                        </Link>
-                      </Badge>
-                    );
-                  })}
-                </Box>
-              </Link>
+              <Box my={2} boxShadow="lg" p={4} key={workout._id}>
+                <Flex>
+                  <Link to={`/workout/${workout._id}/exercise`}>
+                    <Heading
+                      color="blue.400"
+                      casing="uppercase"
+                      fontSize="2xl"
+                      fontWeight="bold"
+                    >
+                      {workout.name}
+                    </Heading>
+                  </Link>
+                  <Spacer />
+                  <Heading
+                    color="blue.400"
+                    casing="uppercase"
+                    fontSize="2xl"
+                    fontWeight="bold"
+                  >
+                    <Moment format="D MMM YYYY" locale="de">
+                      {workout.createdAt}
+                    </Moment>
+                  </Heading>
+                </Flex>
+                {workout.exercises.map((exercise) => {
+                  return (
+                    <>
+                      <Text
+                        fontSize="xl"
+                        key={exercise._id}
+                        mr={2}
+                        color="blue.300"
+                      >
+                        {exercise.exerciseName}
+                      </Text>
+                      <Link
+                        to={`/workout/${workout._id}/exercise/${exercise._id}/set`}
+                      >
+                        <Text color="gray.500" fontWeight="semibold">
+                          {exercise.sätze.length > 1
+                            ? `${exercise.sätze.length} Sätze`
+                            : exercise.sätze.length === 0
+                            ? "noch keine Sätze"
+                            : `${exercise.sätze.length} Satz`}
+                        </Text>
+                        <Text color="gray.400">
+                          {exercise.sätze.map((satz) => {
+                            return `  ${satz.gewicht}x${satz.wdh}  `;
+                          })}
+                        </Text>
+                      </Link>
+                    </>
+                  );
+                })}
+              </Box>
             );
           })}
         <Button mt={6} colorScheme="blue" variant="outline">

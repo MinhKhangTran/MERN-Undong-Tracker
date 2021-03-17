@@ -146,12 +146,16 @@ export const addSetExercise = createAsyncThunk(
   }
 );
 // Types
+interface ISatz {
+  gewicht: number;
+  wdh: number;
+}
 interface IExercise {
   _id: string;
   exerciseName: string;
   exerciseKategory: string;
   exercise: string;
-  sätze: any[];
+  sätze: ISatz[];
 }
 interface IWorkout {
   _id: string;

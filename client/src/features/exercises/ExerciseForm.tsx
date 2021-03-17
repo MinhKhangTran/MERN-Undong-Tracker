@@ -17,6 +17,7 @@ import { getExercises } from "./exerciseSlice";
 import { useHistory, useParams } from "react-router-dom";
 import { RootState } from "../../store";
 import { addExerciseToWorkout } from "../workout/workoutSlice";
+import { toastError } from "../toast/toastSlice";
 
 // Add workout form ausfüllen
 // if sucessfully added dann neue Form mit useState
@@ -39,6 +40,10 @@ const ExerciseForm = () => {
   const [addedExercise, setAddedExercise] = React.useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
+  const { exerciseInfo } = useSelector((state: RootState) => state.exercise);
+  const { änderung, workoutInfo } = useSelector(
+    (state: RootState) => state.workout
+  );
 
   const formik = useFormik({
     initialValues: { exerciseName: "" },
@@ -46,30 +51,39 @@ const ExerciseForm = () => {
       exerciseName: Yup.string().required("Eine Übung ist nötig"),
     }),
     onSubmit: (daten, { resetForm }) => {
-      console.log({
-        id,
-        exerciseName: daten.exerciseName,
-        exerciseKategory: selectedCategory?.category as string,
-        exercise: selectedCategory?._id as string,
-        sätze: [],
-      });
-      dispatch(
-        addExerciseToWorkout({
-          id,
-          exerciseName: daten.exerciseName,
-          exerciseKategory: selectedCategory?.category as string,
-          exercise: selectedCategory?._id as string,
-          sätze: [],
-        })
-      );
+      if (
+        selectedWorkout?.exercises.some(
+          (exercise) => exercise.exerciseName === daten.exerciseName
+        )
+      ) {
+        dispatch(toastError("Diese Übung wurde schon hinzugefügt"));
+      } else {
+        dispatch(
+          addExerciseToWorkout({
+            id,
+            exerciseName: daten.exerciseName,
+            exerciseKategory: selectedCategory?.category as string,
+            exercise: selectedCategory?._id as string,
+            sätze: [],
+          })
+        );
+      }
+      // console.log({
+      //   id,
+      //   exerciseName: daten.exerciseName,
+      //   exerciseKategory: selectedCategory?.category as string,
+      //   exercise: selectedCategory?._id as string,
+      //   sätze: [],
+      // });
+
       resetForm();
     },
   });
-  const { exerciseInfo } = useSelector((state: RootState) => state.exercise);
-  const { änderung } = useSelector((state: RootState) => state.workout);
+
   const selectedCategory = exerciseInfo?.find(
     (exercise) => exercise.name === formik.values.exerciseName
   );
+  const selectedWorkout = workoutInfo?.find((workout) => workout._id === id);
   React.useEffect(() => {
     dispatch(getExercises());
   }, [dispatch]);
