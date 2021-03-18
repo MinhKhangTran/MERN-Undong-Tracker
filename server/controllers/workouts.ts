@@ -44,14 +44,53 @@ export const getAllWorkouts = asyncHandler(
 // @desc    get a workout by ID
 // @route   GET api/a1/workouts/:id
 // @access  private
+export const getWorkoutById = asyncHandler(
+  async (req: Request, res: Response) => {
+    const workout = await Workout.findById(req.params.id);
+    if (workout) {
+      res.status(200).json(workout);
+    } else {
+      res.status(400);
+      throw new Error("Es gab ein Fehler beim Fetchen der Einheit");
+    }
+  }
+);
 
 // @desc    update an workout
 // @route   PUT api/a1/workouts/:id
 // @access  private
+export const updateWorkout = asyncHandler(
+  async (req: Request, res: Response) => {
+    const workout = await Workout.findById(req.params.id);
+    if (workout) {
+      const newWorkout = await Workout.findByIdAndUpdate(
+        req.params.id,
+        { $set: { name: req.body.name } },
+        { new: true }
+      );
+      res.status(200).json(newWorkout);
+    } else {
+      res.status(400);
+      throw new Error("Es gab ein Fehler beim Updaten der Einheit");
+    }
+  }
+);
 
 // @desc    delete an workout by id
 // @route   DELETE api/a1/workouts/:id
 // @access  private
+export const deleteWorkout = asyncHandler(
+  async (req: Request, res: Response) => {
+    const workout = await Workout.findById(req.params.id);
+    if (workout) {
+      await workout.remove();
+      res.status(200).json({ msg: "Einheit wurde gelöscht! 🥲" });
+    } else {
+      res.status(400);
+      throw new Error("Es gab ein Fehler beim Löschen der Einheit");
+    }
+  }
+);
 
 // ===================================================================
 // ==========================Exercise=================================

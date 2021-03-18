@@ -55,6 +55,85 @@ export const getAllWorkouts = createAsyncThunk(
     }
   }
 );
+export const getWorkoutById = createAsyncThunk(
+  "workout/getWorkoutById",
+  async ({ id }: { id: string }, { dispatch, getState, rejectWithValue }) => {
+    try {
+      const {
+        users: { userInfo },
+      } = getState() as RootState;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo?.token}`,
+        },
+      };
+      const { data } = await axios.get(`/api/a1/workouts/${id}`, config);
+      // console.log(data);
+      return data;
+    } catch (error) {
+      // toast
+      dispatch(toastError(error.response.data.message));
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+export const updateWorkout = createAsyncThunk(
+  "workout/updateWorkout",
+  async (
+    { id, name }: { id: string; name: string },
+    { dispatch, getState, rejectWithValue }
+  ) => {
+    try {
+      const {
+        users: { userInfo },
+      } = getState() as RootState;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo?.token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `/api/a1/workouts/${id}`,
+        { name },
+        config
+      );
+      // console.log(data);
+      dispatch(toastSuccess("Workout wurde geändert"));
+      return data;
+    } catch (error) {
+      // toast
+      dispatch(toastError(error.response.data.message));
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+export const deleteWorkout = createAsyncThunk(
+  "workout/deleteWorkout",
+  async ({ id }: { id: string }, { dispatch, getState, rejectWithValue }) => {
+    try {
+      const {
+        users: { userInfo },
+      } = getState() as RootState;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo?.token}`,
+        },
+      };
+      const { data } = await axios.delete(
+        `/api/a1/workouts/${id}`,
+
+        config
+      );
+      // console.log(data);
+      dispatch(toastSuccess(data.msg));
+      return data;
+    } catch (error) {
+      // toast
+      dispatch(toastError(error.response.data.message));
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
 // ===================================================================
 // ==========================Exercise=================================
 // ===================================================================
@@ -170,6 +249,7 @@ interface IInitState {
   error: any;
   workoutInfo: IWorkout[] | null;
   änderung: boolean;
+  singleWorkout: IWorkout | null;
 }
 // init State
 const initialState: IInitState = {
@@ -177,6 +257,7 @@ const initialState: IInitState = {
   error: "",
   workoutInfo: null,
   änderung: false,
+  singleWorkout: null,
 };
 
 // Slices
@@ -212,6 +293,45 @@ export const workoutSlice = createSlice({
       state.workoutInfo = payload;
     });
     builder.addCase(getAllWorkouts.rejected, (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    });
+    // get Workout by ID
+    builder.addCase(getWorkoutById.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(getWorkoutById.fulfilled, (state, { payload }) => {
+      state.loading = false;
+      state.error = "";
+      state.singleWorkout = payload;
+    });
+    builder.addCase(getWorkoutById.rejected, (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    });
+    // update Workout by ID
+    builder.addCase(updateWorkout.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(updateWorkout.fulfilled, (state) => {
+      state.loading = false;
+      state.error = "";
+      state.änderung = true;
+    });
+    builder.addCase(updateWorkout.rejected, (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    });
+    // delete Workout by ID
+    builder.addCase(deleteWorkout.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(deleteWorkout.fulfilled, (state) => {
+      state.loading = false;
+      state.error = "";
+      state.änderung = true;
+    });
+    builder.addCase(deleteWorkout.rejected, (state, { payload }) => {
       state.loading = false;
       state.error = payload;
     });
