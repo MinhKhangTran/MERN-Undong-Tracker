@@ -231,8 +231,9 @@ export const addSetExercise = createAsyncThunk(
 interface ISatz {
   gewicht: number;
   wdh: number;
+  _id: string;
 }
-interface IExercise {
+export interface IExercise {
   _id: string;
   exerciseName: string;
   exerciseKategory: string;

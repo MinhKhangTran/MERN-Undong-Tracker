@@ -33,6 +33,7 @@ import "moment/locale/de";
 import MenuComponent from "../components/MenuComponent";
 
 const Home = () => {
+  const [toggle, setToggle] = React.useState(true);
   const dispatch = useDispatch();
   const { workoutInfo, loading, änderung } = useSelector(
     (state: RootState) => state.workout
@@ -106,6 +107,9 @@ const Home = () => {
                         aligh="center"
                       >
                         <Text
+                          onClick={() => {
+                            setToggle(!toggle);
+                          }}
                           fontSize="xl"
                           key={exercise._id}
                           mr={2}
@@ -114,22 +118,24 @@ const Home = () => {
                           {exercise.exerciseName}
                         </Text>
                       </Flex>
-                      <Link
-                        to={`/workout/${workout._id}/exercise/${exercise._id}/set`}
-                      >
-                        <Text color="gray.500" fontWeight="semibold">
-                          {exercise.sätze.length > 1
-                            ? `${exercise.sätze.length} Sätze`
-                            : exercise.sätze.length === 0
-                            ? "noch keine Sätze"
-                            : `${exercise.sätze.length} Satz`}
-                        </Text>
-                        <Text color="gray.400">
-                          {exercise.sätze.map((satz) => {
-                            return `  ${satz.gewicht}x${satz.wdh}  `;
-                          })}
-                        </Text>
-                      </Link>
+                      {toggle && (
+                        <Link
+                          to={`/workout/${workout._id}/exercise/${exercise._id}/set`}
+                        >
+                          <Text color="gray.500" fontWeight="semibold">
+                            {exercise.sätze.length > 1
+                              ? `${exercise.sätze.length} Sätze`
+                              : exercise.sätze.length === 0
+                              ? "noch keine Sätze"
+                              : `${exercise.sätze.length} Satz`}
+                          </Text>
+                          <Text color="gray.400">
+                            {exercise.sätze.map((satz) => {
+                              return `  ${satz.gewicht}x${satz.wdh}  `;
+                            })}
+                          </Text>
+                        </Link>
+                      )}
                     </Box>
                   );
                 })}

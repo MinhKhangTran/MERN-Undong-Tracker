@@ -14,6 +14,14 @@ import {
   Flex,
   IconButton,
   Spacer,
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -22,8 +30,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { getExercises } from "./exerciseSlice";
 import { useHistory, useParams } from "react-router-dom";
 import { RootState } from "../../store";
-import { addSetExercise } from "../workout/workoutSlice";
+import { addSetExercise, getAllWorkouts } from "../workout/workoutSlice";
 import { FaMinus, FaPlus } from "react-icons/fa";
+import SetTable from "./SetTable";
 
 const SetForm = () => {
   interface IParams {
@@ -75,9 +84,12 @@ const SetForm = () => {
 
   React.useEffect(() => {
     if (änderung) {
-      history.push("/");
+      history.push(`/workout/${workoutId}/exercise/${id}/set`);
+      dispatch(getAllWorkouts());
+    } else {
+      dispatch(getAllWorkouts());
     }
-  }, [änderung]);
+  }, [änderung, dispatch]);
 
   // const selectedCategory = exerciseInfo?.find(
   //   (exercise) => exercise.name === formik.values.gewicht
@@ -184,6 +196,30 @@ const SetForm = () => {
             Hinzufügen
           </Button>
         </form>
+      </Box>
+      <Box mt={12}>
+        <Table variant="simple">
+          <TableCaption>Satzüberblick</TableCaption>
+          <Thead>
+            <Tr>
+              <Th>Satz</Th>
+              <Th>Gewicht</Th>
+              <Th>Reps</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {selectedExercise &&
+              selectedExercise.sätze.map((satz, index) => {
+                return (
+                  <Tr key={satz._id}>
+                    <Td>{index + 1}</Td>
+                    <Td>{satz.gewicht}</Td>
+                    <Td>{satz.wdh}</Td>
+                  </Tr>
+                );
+              })}
+          </Tbody>
+        </Table>
       </Box>
     </Box>
   );
