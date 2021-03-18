@@ -99,6 +99,7 @@ export const updateWorkout = createAsyncThunk(
       );
       // console.log(data);
       dispatch(toastSuccess("Workout wurde geändert"));
+      dispatch(getAllWorkouts());
       return data;
     } catch (error) {
       // toast
@@ -126,6 +127,7 @@ export const deleteWorkout = createAsyncThunk(
       );
       // console.log(data);
       dispatch(toastSuccess(data.msg));
+
       return data;
     } catch (error) {
       // toast
@@ -172,6 +174,7 @@ export const addExerciseToWorkout = createAsyncThunk(
       );
       // console.log(data);
       dispatch(toastSuccess("Die Übung wurde hinzugefügt"));
+
       return data;
     } catch (error) {
       // toast
@@ -236,7 +239,7 @@ interface IExercise {
   exercise: string;
   sätze: ISatz[];
 }
-interface IWorkout {
+export interface IWorkout {
   _id: string;
   name: string;
   user: string;
@@ -316,7 +319,6 @@ export const workoutSlice = createSlice({
     builder.addCase(updateWorkout.fulfilled, (state) => {
       state.loading = false;
       state.error = "";
-      state.änderung = true;
     });
     builder.addCase(updateWorkout.rejected, (state, { payload }) => {
       state.loading = false;

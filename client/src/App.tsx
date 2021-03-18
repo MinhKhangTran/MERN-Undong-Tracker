@@ -11,6 +11,7 @@ import ErrorPage from "./pages/ErrorPage";
 import WorkoutForm from "./features/workout/WorkoutForm";
 import ExerciseForm from "./features/exercises/ExerciseForm";
 import SetForm from "./features/exercises/SetForm";
+import WorkoutUpdateForm from "./features/workout/WorkoutUpdateForm";
 
 interface IRoute {
   path: string;
@@ -42,6 +43,12 @@ const routes: IRoute[] = [
     path: "/workout",
     exact: true,
     component: WorkoutForm,
+    private: true,
+  },
+  {
+    path: "/workout/:id",
+    exact: true,
+    component: WorkoutUpdateForm,
     private: true,
   },
   {

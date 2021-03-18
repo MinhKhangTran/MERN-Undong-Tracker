@@ -29,8 +29,8 @@ import { RootState } from "../store";
 import { clearState, getAllWorkouts } from "../features/workout/workoutSlice";
 import Moment from "react-moment";
 import "moment/locale/de";
-import { BiDotsVerticalRounded } from "react-icons/bi";
-import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
+
+import MenuComponent from "../components/MenuComponent";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -53,38 +53,43 @@ const Home = () => {
           <Text>Willkommen auf deinem Dashboard</Text>
           <Text>Dein Dashboard ist leer</Text>
           <Button mt={6} colorScheme="blue" variant="outline">
-            <Link to="/workout">Hier klicken um eine Einheit einzufügen</Link>
+            <Link to="/workout">Einheit einzufügen</Link>
           </Button>
         </Box>
       </Box>
     );
   }
   return (
-    <Box>
+    <Box w="90%" mx="auto">
       <Heading color="blue.400">Trainingslog</Heading>
       <Box mt={6}>
         <Text>Willkommen auf deinem Dashboard</Text>
         <Text>Deine Einheiten</Text>
+        <Button mt={6} colorScheme="blue" variant="outline">
+          <Link to="/workout">Neue Einheit hinzufügen</Link>
+        </Button>
         {!loading &&
           workoutInfo?.map((workout) => {
             return (
               <Box my={2} boxShadow="lg" p={4} key={workout._id}>
-                <Flex>
+                <Flex align="center">
                   <Link to={`/workout/${workout._id}/exercise`}>
                     <Heading
                       color="blue.400"
                       casing="uppercase"
-                      fontSize="2xl"
+                      fontSize={{ base: "xl", md: "2xl" }}
                       fontWeight="bold"
                     >
                       {workout.name}
                     </Heading>
                   </Link>
+
+                  <MenuComponent workout={workout} />
                   <Spacer />
                   <Heading
                     color="blue.400"
                     casing="uppercase"
-                    fontSize="2xl"
+                    fontSize={{ base: "xl", md: "2xl" }}
                     fontWeight="bold"
                   >
                     <Moment format="D MMM YYYY" locale="de">
@@ -94,7 +99,7 @@ const Home = () => {
                 </Flex>
                 {workout.exercises.map((exercise) => {
                   return (
-                    <>
+                    <Box key={exercise._id}>
                       <Flex
                         borderBottom="1px"
                         borderColor="blue.50"
@@ -108,42 +113,6 @@ const Home = () => {
                         >
                           {exercise.exerciseName}
                         </Text>
-                        <Spacer />
-
-                        <Menu>
-                          <MenuButton
-                            as={IconButton}
-                            icon={<BiDotsVerticalRounded />}
-                            variant="ghost"
-                            colorScheme="blue"
-                          ></MenuButton>
-                          <MenuList>
-                            <Flex align="center">
-                              <MenuItem>
-                                <Text>Einheit ändern</Text>
-                                <Spacer />
-                                <Icon
-                                  w={4}
-                                  h={4}
-                                  color="green.400"
-                                  as={FaEdit}
-                                />
-                              </MenuItem>
-                            </Flex>
-                            <Flex align="center">
-                              <MenuItem>
-                                <Text>Einheit löschen</Text>
-                                <Spacer />
-                                <Icon
-                                  w={4}
-                                  h={4}
-                                  color="red.400"
-                                  as={FaTrash}
-                                />
-                              </MenuItem>
-                            </Flex>
-                          </MenuList>
-                        </Menu>
                       </Flex>
                       <Link
                         to={`/workout/${workout._id}/exercise/${exercise._id}/set`}
@@ -161,7 +130,7 @@ const Home = () => {
                           })}
                         </Text>
                       </Link>
-                    </>
+                    </Box>
                   );
                 })}
                 <Button mt={6} colorScheme="blue" variant="solid">
@@ -172,9 +141,6 @@ const Home = () => {
               </Box>
             );
           })}
-        <Button mt={6} colorScheme="blue" variant="outline">
-          <Link to="/workout">Hier klicken um eine Einheit einzufügen</Link>
-        </Button>
       </Box>
     </Box>
   );

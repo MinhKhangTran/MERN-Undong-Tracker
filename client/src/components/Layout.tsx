@@ -75,6 +75,7 @@ const Layout: React.FC = ({ children }) => {
       <Box position="relative">
         <Flex display={{ base: "none", sm: "none", md: "block" }}>
           <Box
+            zIndex="sticky"
             w={{ lg: "15%", md: "25%" }}
             bg="blue.200"
             h="100vh"
@@ -121,7 +122,7 @@ const Layout: React.FC = ({ children }) => {
           {/* Children */}
           <Box p={4}>{children}</Box>
         </Box>
-        <Box bottom="0" left="50%" transform="translateX(-50%)">
+        {/* <Box bottom="0" left="50%" transform="translateX(-50%)">
           <Text fontSize={{ base: "md", md: "xl" }} whiteSpace="nowrap">
             Made with{" "}
             <span role="img" aria-label="blaues herz">
@@ -129,7 +130,7 @@ const Layout: React.FC = ({ children }) => {
             </span>{" "}
             by MKT {new Date().getFullYear()}
           </Text>
-        </Box>
+        </Box> */}
       </Box>
     );
   }
@@ -209,7 +210,7 @@ const Layout: React.FC = ({ children }) => {
       </Flex>
       {/* Mobile view screen */}
       <Box display={{ base: "block", md: "none" }}>
-        <Box position="sticky" top="0" bg="blue.200" p={4}>
+        <Box zIndex="sticky" position="sticky" top="0" bg="blue.200" p={4}>
           <Flex w="90%" mx="auto" align="center">
             <Link to="/">
               <Flex align="center" color="blue.700">
@@ -252,7 +253,7 @@ const Layout: React.FC = ({ children }) => {
         {/* Children */}
         <Box p={4}>{children}</Box>
       </Box>
-      <Box bottom="0" left="50%" transform="translateX(-50%)">
+      {/* <Box bottom="0" left="50%" transform="translateX(-50%)">
         <Text fontSize={{ base: "md", md: "xl" }} whiteSpace="nowrap">
           Made with{" "}
           <span role="img" aria-label="blaues herz">
@@ -260,7 +261,7 @@ const Layout: React.FC = ({ children }) => {
           </span>{" "}
           by MKT {new Date().getFullYear()}
         </Text>
-      </Box>
+      </Box> */}
     </Box>
   );
 };
