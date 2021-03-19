@@ -1,5 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { string } from "yup/lib/locale";
+import { RootState } from "../../store";
+import { toastError, toastSuccess } from "../toast/toastSlice";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 // Async actions
 export const getExercises = createAsyncThunk(
@@ -13,19 +16,53 @@ export const getExercises = createAsyncThunk(
     }
   }
 );
+export const createExercise = createAsyncThunk(
+  "exercises/createExercise",
+  async (
+    { name, category }: { name: string; category: string },
+    { dispatch, rejectWithValue, getState }
+  ) => {
+    try {
+      const {
+        users: { userInfo },
+      } = getState() as RootState;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo?.token}`,
+        },
+      };
+      const { data } = await axios.post(
+        "/api/a1/exercises",
+        {
+          name,
+          category,
+        },
+        config
+      );
+      dispatch(toastSuccess("Neue Übung wurde hinzugefügt 🤓"));
+      return data;
+    } catch (error) {
+      // toast
+      dispatch(toastError(error.response.data.message));
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
 
 // Types
+export type TCategory =
+  | "Brust"
+  | "Arme"
+  | "Schulter"
+  | "Beine"
+  | "Bauch"
+  | "Rücken"
+  | "Unterer Rücken";
+
 interface IExercise {
   _id: string;
   name: string;
-  category:
-    | "Brust"
-    | "Arme"
-    | "Schulter"
-    | "Beine"
-    | "Bauch"
-    | "Rücken"
-    | "Unterer Rücken";
+  category: string;
 }
 interface IInitState {
   loading: boolean;
@@ -54,6 +91,18 @@ export const exerciseSlice = createSlice({
       state.exerciseInfo = payload;
     });
     builder.addCase(getExercises.rejected, (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    });
+    // add exercise
+    builder.addCase(createExercise.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(createExercise.fulfilled, (state) => {
+      state.loading = false;
+      state.error = "";
+    });
+    builder.addCase(createExercise.rejected, (state, { payload }) => {
       state.loading = false;
       state.error = payload;
     });

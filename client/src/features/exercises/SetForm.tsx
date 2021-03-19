@@ -55,10 +55,10 @@ const SetForm = () => {
     validationSchema: Yup.object({
       gewicht: Yup.number()
         .required("Ein Gewicht ist nötig")
-        .min(0, "Das Gewicht sollte positiv sein 🥲"),
+        .min(1, "Das Gewicht sollte positiv sein 🥲"),
       wdh: Yup.number()
         .required("Eine Wiederholungszahl ist nötig")
-        .min(0, "Wiederholungen sind nicht negativ! 🥸"),
+        .min(1, "Wiederholungen sind nicht negativ! 🥸"),
     }),
     onSubmit: (daten, { resetForm }) => {
       console.log(daten);

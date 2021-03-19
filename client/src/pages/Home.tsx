@@ -141,7 +141,7 @@ const Home = () => {
                 })}
                 <Button mt={6} colorScheme="blue" variant="solid">
                   <Link to={`/workout/${workout._id}/exercise`}>
-                    Eine weiter Übung hinzufügen
+                    Eine Übung hinzufügen
                   </Link>
                 </Button>
               </Box>

@@ -8,13 +8,15 @@ import {
   FormErrorMessage,
   Button,
   Select,
+  ButtonGroup,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { IoMdAdd } from "react-icons/io";
+import { IoCreateOutline } from "react-icons/io5";
 import { useSelector, useDispatch } from "react-redux";
 import { getExercises } from "./exerciseSlice";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams, Link } from "react-router-dom";
 import { RootState } from "../../store";
 import { addExerciseToWorkout } from "../workout/workoutSlice";
 import { toastError } from "../toast/toastSlice";
@@ -96,7 +98,7 @@ const ExerciseForm = () => {
   return (
     <Box>
       <Heading color="blue.500" fontSize="xl">
-        Eine Neue Übung hinzufügen
+        Eine Übung hinzufügen
       </Heading>
       <Box mt={6}>
         <form onSubmit={formik.handleSubmit}>
@@ -126,14 +128,24 @@ const ExerciseForm = () => {
             ></Input>
             <FormErrorMessage>{formik.errors.exerciseName}</FormErrorMessage>
           </FormControl>
-          <Button
-            type="submit"
-            mt={8}
-            leftIcon={<IoMdAdd />}
-            colorScheme="blue"
-          >
-            Hinzufügen
-          </Button>
+          <ButtonGroup>
+            <Button
+              type="submit"
+              mt={8}
+              leftIcon={<IoMdAdd />}
+              colorScheme="blue"
+            >
+              Hinzufügen
+            </Button>
+            <Button
+              mt={8}
+              leftIcon={<IoCreateOutline />}
+              colorScheme="blue"
+              variant="outline"
+            >
+              <Link to="/exercise/create">Neue Übung erstellen</Link>
+            </Button>
+          </ButtonGroup>
         </form>
       </Box>
     </Box>
