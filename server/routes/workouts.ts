@@ -14,6 +14,8 @@ import {
   // Set controller
   addSet,
   deleteSet,
+  updateSet,
+  getSingleSet,
 } from "../controllers/workouts";
 // middlewares
 import { protect } from "../middlewares/authMiddleware";
@@ -41,11 +43,14 @@ router
 router.route("/:id/exercise").put(protect, addExercise);
 router.route("/exercises").get(protect, getAllExercises);
 // Set
+
 // add set to an exercise
 router.route("/:workoutID/exercise/:id/set").put(protect, addSet);
-// delete a set
+// delete a set and get set by id and update a set
 router
   .route("/:workoutId/exercise/:exerciseId/set/:setId")
-  .delete(protect, deleteSet);
+  .delete(protect, deleteSet)
+  .get(protect, getSingleSet)
+  .put(protect, updateSet);
 
 export default router;

@@ -227,6 +227,40 @@ export const addSetExercise = createAsyncThunk(
     }
   }
 );
+export const getSetById = createAsyncThunk(
+  "workout/getSetById",
+  async (
+    {
+      workoutId,
+      exerciseId,
+      setId,
+    }: { workoutId: string; exerciseId: string; setId: string },
+    { dispatch, getState, rejectWithValue }
+  ) => {
+    try {
+      const {
+        users: { userInfo },
+      } = getState() as RootState;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo?.token}`,
+        },
+      };
+      const { data } = await axios.get(
+        `/api/a1/workouts/${workoutId}/exercise/${exerciseId}/set/${setId}`,
+        config
+      );
+      // console.log(data);
+      return data.exercises
+        .find((exercise: any) => exercise._id === exerciseId)
+        .sätze.find((satz: any) => satz._id === setId);
+    } catch (error) {
+      // toast
+      dispatch(toastError(error.response.data.message));
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
 export const deleteSet = createAsyncThunk(
   "workout/deleteSet",
   async (
@@ -262,6 +296,49 @@ export const deleteSet = createAsyncThunk(
     }
   }
 );
+export const updateSet = createAsyncThunk(
+  "workout/updateSet",
+  async (
+    {
+      workoutId,
+      exerciseId,
+      setId,
+      gewicht,
+      wdh,
+    }: {
+      workoutId: string;
+      exerciseId: string;
+      setId: string;
+      gewicht: number;
+      wdh: number;
+    },
+    { dispatch, getState, rejectWithValue }
+  ) => {
+    try {
+      const {
+        users: { userInfo },
+      } = getState() as RootState;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo?.token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `/api/a1/workouts/${workoutId}/exercise/${exerciseId}/set/${setId}`,
+        { gewicht, wdh },
+        config
+      );
+      // console.log(data);
+      dispatch(toastSuccess("Satz wurde geändert"));
+      dispatch(getAllWorkouts());
+      return data;
+    } catch (error) {
+      // toast
+      dispatch(toastError(error.response.data.message));
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
 // Types
 interface ISatz {
   gewicht: number;
@@ -289,6 +366,7 @@ interface IInitState {
   workoutInfo: IWorkout[] | null;
   änderung: boolean;
   singleWorkout: IWorkout | null;
+  singleSet: ISatz | null;
 }
 // init State
 const initialState: IInitState = {
@@ -297,6 +375,7 @@ const initialState: IInitState = {
   workoutInfo: null,
   änderung: false,
   singleWorkout: null,
+  singleSet: null,
 };
 
 // Slices
@@ -405,6 +484,19 @@ export const workoutSlice = createSlice({
       state.loading = false;
       state.error = payload;
     });
+    // get Set by ID
+    builder.addCase(getSetById.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(getSetById.fulfilled, (state, { payload }) => {
+      state.loading = false;
+      state.error = "";
+      state.singleSet = payload;
+    });
+    builder.addCase(getSetById.rejected, (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    });
     // delete Set by ID
     builder.addCase(deleteSet.pending, (state) => {
       state.loading = true;
@@ -415,6 +507,19 @@ export const workoutSlice = createSlice({
       state.änderung = true;
     });
     builder.addCase(deleteSet.rejected, (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    });
+    // update Set by ID
+    builder.addCase(updateSet.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(updateSet.fulfilled, (state) => {
+      state.loading = false;
+      state.error = "";
+      state.änderung = true;
+    });
+    builder.addCase(updateSet.rejected, (state, { payload }) => {
       state.loading = false;
       state.error = payload;
     });

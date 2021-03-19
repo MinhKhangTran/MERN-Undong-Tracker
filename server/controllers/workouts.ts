@@ -177,13 +177,47 @@ export const addSet = asyncHandler(async (req: Request, res: Response) => {
 // @access  private
 
 // @desc    get a set by ID
-// @route   GET api/a1/workouts/exercise/set/:id
+// @route   GET api/a1/workouts/:workoutId/exercise/:exerciseId/set/:setId
 // @access  private
+export const getSingleSet = asyncHandler(
+  async (req: Request, res: Response) => {
+    const set = await Workout.findOne({
+      _id: req.params.workoutId,
+      "exercises._id": req.params.exerciseId,
+      "exercises.sätze._id": req.params.setId,
+    });
+
+    if (set) {
+      // console.log(set);
+      res.status(200).json(set);
+    } else {
+      res.status(400);
+      throw new Error("Es gab ein Fehler beim Fetchen des Satzes");
+    }
+  }
+);
 
 // @desc    update a set
-// @route   PUT api/a1/workouts/exercise/set/:id
+// @route   PUT api/a1/workouts/:workoutId/exercise/:exerciseId/set/:setId
 // @access  private
-
+export const updateSet = asyncHandler(async (req: Request, res: Response) => {
+  const updatedSet = await Workout.findOneAndUpdate(
+    {
+      _id: req.params.workoutId,
+      "exercises._id": req.params.exerciseId,
+      "exercises.sätze._id": req.params.setId,
+    },
+    { $set: { "sätze.gewicht": req.body.gewicht, "sätze.wdh": req.body.wdh } },
+    { new: true }
+  );
+  console.log(updateSet);
+  if (updatedSet) {
+    res.status(200).json({ msg: "Satz wurde geändert" });
+  } else {
+    res.status(400);
+    throw new Error("Es gab ein Fehler beim Ändern des Satzes");
+  }
+});
 // @desc    delete an set by id
 // @route   DELETE api/a1/workouts/:workoutId/exercise/:exerciseId/set/:setId
 // @access  private

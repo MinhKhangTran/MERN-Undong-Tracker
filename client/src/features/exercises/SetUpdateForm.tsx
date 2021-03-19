@@ -36,22 +36,26 @@ import {
   getAllWorkouts,
   deleteSet,
   getWorkoutById,
+  getSetById,
+  updateSet,
 } from "../workout/workoutSlice";
 import { FaEdit, FaMinus, FaPlus, FaTrash } from "react-icons/fa";
 
 const SetForm = () => {
   interface IParams {
-    id: string;
     workoutId: string;
+    exerciseId: string;
+    setId: string;
   }
-  const { id, workoutId } = useParams<IParams>();
+  const { workoutId, exerciseId, setId } = useParams<IParams>();
 
   const dispatch = useDispatch();
   const history = useHistory();
+  const [formData, setFormData] = React.useState({ gewicht: 0, wdh: 0 });
 
   const formik = useFormik({
-    // enableReinitialize: true,
-    initialValues: { gewicht: 0, wdh: 0 },
+    enableReinitialize: true,
+    initialValues: formData,
     validationSchema: Yup.object({
       gewicht: Yup.number()
         .required("Ein Gewicht ist nötig")
@@ -63,9 +67,10 @@ const SetForm = () => {
     onSubmit: (daten, { resetForm }) => {
       console.log(daten);
       dispatch(
-        addSetExercise({
+        updateSet({
           workoutId,
-          id,
+          exerciseId,
+          setId,
           gewicht: daten.gewicht,
           wdh: daten.wdh,
         })
@@ -74,7 +79,7 @@ const SetForm = () => {
     },
   });
 
-  const { workoutInfo, änderung } = useSelector(
+  const { workoutInfo, änderung, singleSet } = useSelector(
     (state: RootState) => state.workout
   );
 
@@ -82,23 +87,41 @@ const SetForm = () => {
     return workout._id === workoutId;
   });
   const selectedExercise = selectedWorkout?.exercises.find(
-    (exercise) => exercise._id === id
+    (exercise) => exercise._id === exerciseId
   );
 
   // Clear state after detecting state.änderung
   React.useEffect(() => {
     if (änderung) {
-      history.push(`/workout/${workoutId}/exercise/${id}/set`);
+      history.push(`/workout/${workoutId}/exercise/${exerciseId}/set`);
       dispatch(getAllWorkouts());
     } else {
       dispatch(getAllWorkouts());
     }
-  }, [änderung, dispatch, history, workoutId, id]);
+  }, [änderung, dispatch, history, workoutId, exerciseId]);
 
+  //   get single set
+  React.useEffect(() => {
+    dispatch(
+      getSetById({
+        workoutId,
+        exerciseId,
+        setId,
+      })
+    );
+  }, [dispatch, workoutId, exerciseId, setId]);
+
+  //   update formdata
+  React.useEffect(() => {
+    if (singleSet) {
+      setFormData({ gewicht: singleSet.gewicht, wdh: singleSet.wdh });
+      console.log(formData);
+    }
+  }, [singleSet]);
   return (
     <Box>
       <Heading color="blue.500" fontSize="xl">
-        Wieviel Gewicht und wieviele Wiederholungen?
+        Satz ändern
       </Heading>
 
       <Text fontSize="2xl" mt={6} color="blue.500">
@@ -188,13 +211,8 @@ const SetForm = () => {
             </Flex> */}
             <FormErrorMessage>{formik.errors.wdh}</FormErrorMessage>
           </FormControl>
-          <Button
-            type="submit"
-            mt={8}
-            leftIcon={<IoMdAdd />}
-            colorScheme="blue"
-          >
-            Hinzufügen
+          <Button type="submit" mt={8} variant="outline" colorScheme="blue">
+            Ändern
           </Button>
         </form>
       </Box>
@@ -206,7 +224,6 @@ const SetForm = () => {
               <Th>Satz</Th>
               <Th>Gewicht</Th>
               <Th>Reps</Th>
-              <Th></Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -217,37 +234,6 @@ const SetForm = () => {
                     <Td>{index + 1}</Td>
                     <Td>{satz.gewicht}</Td>
                     <Td>{satz.wdh}</Td>
-                    <Td>
-                      <ButtonGroup>
-                        <Link
-                          to={`/workout/${workoutId}/exercise/${id}/set/${satz._id}`}
-                        >
-                          <IconButton
-                            icon={<FaEdit />}
-                            aria-label="Edit"
-                            variant="ghost"
-                            colorScheme="green"
-                            cursor="pointer"
-                          ></IconButton>
-                        </Link>
-                        <IconButton
-                          icon={<FaTrash />}
-                          aria-label="Delete"
-                          variant="ghost"
-                          colorScheme="red"
-                          cursor="pointer"
-                          onClick={() => {
-                            dispatch(
-                              deleteSet({
-                                workoutId,
-                                exerciseId: id,
-                                setId: satz._id,
-                              })
-                            );
-                          }}
-                        ></IconButton>
-                      </ButtonGroup>
-                    </Td>
                   </Tr>
                 );
               })}

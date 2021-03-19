@@ -12,6 +12,7 @@ import WorkoutForm from "./features/workout/WorkoutForm";
 import ExerciseForm from "./features/exercises/ExerciseForm";
 import SetForm from "./features/exercises/SetForm";
 import WorkoutUpdateForm from "./features/workout/WorkoutUpdateForm";
+import SetUpdateForm from "./features/exercises/SetUpdateForm";
 
 interface IRoute {
   path: string;
@@ -61,6 +62,12 @@ const routes: IRoute[] = [
     path: "/workout/:workoutId/exercise/:id/set",
     exact: true,
     component: SetForm,
+    private: true,
+  },
+  {
+    path: "/workout/:workoutId/exercise/:exerciseId/set/:setId",
+    exact: true,
+    component: SetUpdateForm,
     private: true,
   },
   {
