@@ -227,6 +227,41 @@ export const addSetExercise = createAsyncThunk(
     }
   }
 );
+export const deleteSet = createAsyncThunk(
+  "workout/deleteSet",
+  async (
+    {
+      workoutId,
+      exerciseId,
+      setId,
+    }: { workoutId: string; exerciseId: string; setId: string },
+    { dispatch, getState, rejectWithValue }
+  ) => {
+    try {
+      const {
+        users: { userInfo },
+      } = getState() as RootState;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo?.token}`,
+        },
+      };
+      const { data } = await axios.delete(
+        `/api/a1/workouts/${workoutId}/exercise/${exerciseId}/set/${setId}`,
+
+        config
+      );
+      // console.log(data);
+      dispatch(toastSuccess(data.msg));
+
+      return data;
+    } catch (error) {
+      // toast
+      dispatch(toastError(error.response.data.message));
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
 // Types
 interface ISatz {
   gewicht: number;
@@ -367,6 +402,19 @@ export const workoutSlice = createSlice({
       state.änderung = true;
     });
     builder.addCase(addSetExercise.rejected, (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    });
+    // delete Set by ID
+    builder.addCase(deleteSet.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(deleteSet.fulfilled, (state) => {
+      state.loading = false;
+      state.error = "";
+      state.änderung = true;
+    });
+    builder.addCase(deleteSet.rejected, (state, { payload }) => {
       state.loading = false;
       state.error = payload;
     });

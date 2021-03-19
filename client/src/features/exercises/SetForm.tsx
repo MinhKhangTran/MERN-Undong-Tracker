@@ -22,6 +22,7 @@ import {
   Th,
   Td,
   TableCaption,
+  ButtonGroup,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -30,9 +31,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { getExercises } from "./exerciseSlice";
 import { useHistory, useParams } from "react-router-dom";
 import { RootState } from "../../store";
-import { addSetExercise, getAllWorkouts } from "../workout/workoutSlice";
-import { FaMinus, FaPlus } from "react-icons/fa";
-import SetTable from "./SetTable";
+import {
+  addSetExercise,
+  getAllWorkouts,
+  deleteSet,
+} from "../workout/workoutSlice";
+import { FaEdit, FaMinus, FaPlus, FaTrash } from "react-icons/fa";
 
 const SetForm = () => {
   interface IParams {
@@ -205,6 +209,7 @@ const SetForm = () => {
               <Th>Satz</Th>
               <Th>Gewicht</Th>
               <Th>Reps</Th>
+              <Th></Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -215,6 +220,33 @@ const SetForm = () => {
                     <Td>{index + 1}</Td>
                     <Td>{satz.gewicht}</Td>
                     <Td>{satz.wdh}</Td>
+                    <Td>
+                      <ButtonGroup>
+                        <IconButton
+                          icon={<FaEdit />}
+                          aria-label="Edit"
+                          variant="ghost"
+                          colorScheme="green"
+                          cursor="pointer"
+                        ></IconButton>
+                        <IconButton
+                          icon={<FaTrash />}
+                          aria-label="Delete"
+                          variant="ghost"
+                          colorScheme="red"
+                          cursor="pointer"
+                          onClick={() => {
+                            dispatch(
+                              deleteSet({
+                                workoutId,
+                                exerciseId: id,
+                                setId: satz._id,
+                              })
+                            );
+                          }}
+                        ></IconButton>
+                      </ButtonGroup>
+                    </Td>
                   </Tr>
                 );
               })}

@@ -7,11 +7,13 @@ import {
   getWorkoutById,
   updateWorkout,
   deleteWorkout,
+
   // Exercise controller
   addExercise,
   getAllExercises,
   // Set controller
   addSet,
+  deleteSet,
 } from "../controllers/workouts";
 // middlewares
 import { protect } from "../middlewares/authMiddleware";
@@ -41,5 +43,9 @@ router.route("/exercises").get(protect, getAllExercises);
 // Set
 // add set to an exercise
 router.route("/:workoutID/exercise/:id/set").put(protect, addSet);
+// delete a set
+router
+  .route("/:workoutId/exercise/:exerciseId/set/:setId")
+  .delete(protect, deleteSet);
 
 export default router;

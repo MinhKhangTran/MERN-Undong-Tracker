@@ -21,6 +21,7 @@ export interface IWorkout extends Document {
         | "Unterer Rücken";
       sätze: [
         {
+          _id: string;
           gewicht: number;
           wdh: number;
         }

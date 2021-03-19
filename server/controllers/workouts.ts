@@ -185,5 +185,18 @@ export const addSet = asyncHandler(async (req: Request, res: Response) => {
 // @access  private
 
 // @desc    delete an set by id
-// @route   DELETE api/a1/workouts/exercise/set/:id
+// @route   DELETE api/a1/workouts/:workoutId/exercise/:exerciseId/set/:setId
 // @access  private
+export const deleteSet = asyncHandler(async (req: Request, res: Response) => {
+  const removedWorkout = await Workout.findOneAndUpdate(
+    { _id: req.params.workoutId, "exercises._id": req.params.exerciseId },
+    // @ts-expect-error
+    { $pull: { "exercises.$.sätze": { _id: req.params.setId } } }
+  );
+  if (removedWorkout) {
+    res.status(200).json({ msg: "Satz wurde gelöscht" });
+  } else {
+    res.status(400);
+    throw new Error("Es gab ein Fehler beim Löschen des Satzes");
+  }
+});
