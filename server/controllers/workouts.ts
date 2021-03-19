@@ -201,14 +201,23 @@ export const getSingleSet = asyncHandler(
 // @route   PUT api/a1/workouts/:workoutId/exercise/:exerciseId/set/:setId
 // @access  private
 export const updateSet = asyncHandler(async (req: Request, res: Response) => {
-  const updatedSet = await Workout.findOneAndUpdate(
+  const updatedSet = await Workout.updateOne(
     {
       _id: req.params.workoutId,
-      "exercises._id": req.params.exerciseId,
-      "exercises.sätze._id": req.params.setId,
     },
-    { $set: { "sätze.gewicht": req.body.gewicht, "sätze.wdh": req.body.wdh } },
-    { new: true }
+    {
+      $set: {
+        "exercises.$[].sätze.$[elem].gewicht": req.body.gewicht,
+        "exercises.$[].sätze.$[elem].wdh": req.body.wdh,
+      },
+    },
+    {
+      arrayFilters: [
+        {
+          "elem._id": req.params.setId,
+        },
+      ],
+    }
   );
   console.log(updateSet);
   if (updatedSet) {
