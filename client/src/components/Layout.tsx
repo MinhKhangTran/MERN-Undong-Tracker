@@ -164,10 +164,11 @@ const Layout: React.FC = ({ children }) => {
             fontSize="xl"
             color="blue.700"
             fontWeight="semibold"
+            casing="capitalize"
           >
             <Link to="/login">Hi {userInfo?.username}</Link>
           </Text>
-          <Text
+          {/* <Text
             _hover={{ transform: "rotate(-3deg)" }}
             fontSize="xl"
             my={4}
@@ -190,7 +191,7 @@ const Layout: React.FC = ({ children }) => {
             color="blue.700"
           >
             Volumen-Junkie
-          </Text>
+          </Text> */}
           <Text
             _hover={{ transform: "rotate(-1deg)" }}
             fontSize="xl"
@@ -231,13 +232,14 @@ const Layout: React.FC = ({ children }) => {
                 colorScheme="blue"
                 as={Button}
                 rightIcon={<ChevronDownIcon />}
+                variant="ghost"
               >
-                User
+                <Text casing="capitalize">{userInfo?.username}</Text>
               </MenuButton>
               <MenuList>
-                <MenuItem>Dein Profil</MenuItem>
+                {/* <MenuItem>Dein Profil</MenuItem>
                 <MenuItem>Der Stärkste im Raum</MenuItem>
-                <MenuItem>Volumen-Junkie</MenuItem>
+                <MenuItem>Volumen-Junkie</MenuItem> */}
                 <MenuItem
                   onClick={() => {
                     dispatch(logoutUser());

@@ -1,6 +1,6 @@
 import React from "react";
 import { Box } from "@chakra-ui/react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch, Redirect, RouteProps } from "react-router-dom";
 // Layout
 import Layout from "./components/Layout";
 // pages
@@ -14,6 +14,8 @@ import SetForm from "./features/exercises/SetForm";
 import WorkoutUpdateForm from "./features/workout/WorkoutUpdateForm";
 import SetUpdateForm from "./features/exercises/SetUpdateForm";
 import ExerciseCreate from "./features/exercises/ExerciseCreate";
+import { RootState } from "./store";
+import { useSelector } from "react-redux";
 
 interface IRoute {
   path: string;
@@ -85,15 +87,33 @@ const routes: IRoute[] = [
   },
 ];
 
+const PrivateRoute = (props: RouteProps) => {
+  const { userInfo } = useSelector((state: RootState) => state.users);
+  const { children, ...rest } = props;
+  return (
+    <Route
+      {...rest}
+      render={() => {
+        return userInfo?._id.length !== 0 ? (
+          children
+        ) : (
+          <Redirect to="/"></Redirect>
+        );
+      }}
+    ></Route>
+  );
+};
+
 const App = () => {
   return (
     <Layout>
       <Switch>
         {routes.map((route, index) => {
+          const RouteType = route.private ? PrivateRoute : Route;
           return (
-            <Route key={index} path={route.path} exact={route.exact}>
+            <RouteType key={index} path={route.path} exact={route.exact}>
               <route.component />
-            </Route>
+            </RouteType>
           );
         })}
       </Switch>

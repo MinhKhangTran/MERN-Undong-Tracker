@@ -143,7 +143,7 @@ const ExerciseForm = () => {
               colorScheme="blue"
               variant="outline"
             >
-              <Link to="/exercise/create">Neue Übung erstellen</Link>
+              <Link to="/exercise/create">Neue Übung</Link>
             </Button>
           </ButtonGroup>
         </form>
