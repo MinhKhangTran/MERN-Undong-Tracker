@@ -77,6 +77,28 @@ export const getWorkoutById = createAsyncThunk(
     }
   }
 );
+export const cloneWorkout = createAsyncThunk(
+  "workout/cloneWorkout",
+  async ({ id }: { id: string }, { dispatch, getState, rejectWithValue }) => {
+    try {
+      const {
+        users: { userInfo },
+      } = getState() as RootState;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo?.token}`,
+        },
+      };
+      const { data } = await axios.post(`/api/a1/workouts/${id}`, {}, config);
+      // console.log(data);
+      return data;
+    } catch (error) {
+      // toast
+      dispatch(toastError(error.response.data.message));
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
 export const updateWorkout = createAsyncThunk(
   "workout/updateWorkout",
   async (
@@ -528,6 +550,19 @@ export const workoutSlice = createSlice({
       state.singleWorkout = payload;
     });
     builder.addCase(getWorkoutById.rejected, (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    });
+    // clone Workout by ID
+    builder.addCase(cloneWorkout.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(cloneWorkout.fulfilled, (state, { payload }) => {
+      state.loading = false;
+      state.error = "";
+      state.workoutInfo?.push(payload);
+    });
+    builder.addCase(cloneWorkout.rejected, (state, { payload }) => {
       state.loading = false;
       state.error = payload;
     });

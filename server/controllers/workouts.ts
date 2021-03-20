@@ -55,6 +55,23 @@ export const getWorkoutById = asyncHandler(
     }
   }
 );
+// @desc    clone a workout by ID to day now
+// @route   POST api/a1/workouts/:id
+// @access  private
+export const cloneWorkout = asyncHandler(
+  async (req: Request, res: Response) => {
+    const workout = await Workout.findOne({ _id: req.params.id });
+    if (workout) {
+      delete workout._id;
+      console.log(workout);
+
+      res.status(200).json(workout);
+    } else {
+      res.status(400);
+      throw new Error("Es gab ein Fehler beim Fetchen der Einheit");
+    }
+  }
+);
 
 // @desc    update an workout
 // @route   PUT api/a1/workouts/:id

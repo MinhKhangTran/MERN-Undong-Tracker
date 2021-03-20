@@ -7,7 +7,7 @@ import {
   getWorkoutById,
   updateWorkout,
   deleteWorkout,
-
+  cloneWorkout,
   // Exercise controller
   addExercise,
   getAllExercises,
@@ -37,6 +37,7 @@ router
   .get(protect, getAllWorkouts);
 router
   .route("/:id")
+  .post(protect, cloneWorkout)
   .get(protect, getWorkoutById)
   .put(protect, createWorkoutValidator, runValidation, updateWorkout)
   .delete(protect, deleteWorkout);

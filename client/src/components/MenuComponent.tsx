@@ -9,14 +9,19 @@ import {
   MenuList,
   MenuItem,
   Icon,
+  MenuDivider,
 } from "@chakra-ui/react";
 
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { IWorkout, deleteWorkout } from "../features/workout/workoutSlice";
+import {
+  IWorkout,
+  deleteWorkout,
+  cloneWorkout,
+} from "../features/workout/workoutSlice";
 
 import { BiDotsVerticalRounded } from "react-icons/bi";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaTrash, FaClone } from "react-icons/fa";
 
 const MenuComponent = ({ workout }: { workout: IWorkout }) => {
   const dispatch = useDispatch();
@@ -34,12 +39,25 @@ const MenuComponent = ({ workout }: { workout: IWorkout }) => {
         <Link to={`/workout/${workout._id}`}>
           <Flex align="center">
             <MenuItem>
-              <Text>Name der Einheit ändern</Text>
+              <Text>Name ändern</Text>
               <Spacer />
               <Icon w={4} h={4} color="green.400" as={FaEdit} />
             </MenuItem>
           </Flex>
         </Link>
+        {/* <Flex
+          onClick={() => {
+            dispatch(cloneWorkout({ id: workout._id }));
+          }}
+          align="center"
+        >
+          <MenuItem>
+            <Text>Einheit duplizieren</Text>
+            <Spacer />
+            <Icon w={4} h={4} color="blue.400" as={FaClone} />
+          </MenuItem>
+        </Flex> */}
+        <MenuDivider />
         <Flex
           onClick={() => {
             dispatch(deleteWorkout({ id: workout._id }));
