@@ -21,7 +21,8 @@ import Moment from "react-moment";
 import "moment/locale/de";
 
 import MenuComponent from "../components/MenuComponent";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
+import { BsPlusCircle } from "react-icons/bs";
 
 const Home = () => {
   const [toggle, setToggle] = React.useState(true);
@@ -113,8 +114,8 @@ const Home = () => {
                           <>
                             <Spacer />
                             <ButtonGroup>
-                              <Box
-                              // to={`/workout/${workoutId}/exercise/${id}/set/${satz._id}`}
+                              {/* <Link
+                                to={`/workout/${workout._id}/exercise/${exercise._id}/update`}
                               >
                                 <IconButton
                                   icon={<FaEdit />}
@@ -122,11 +123,8 @@ const Home = () => {
                                   variant="ghost"
                                   colorScheme="green"
                                   cursor="pointer"
-                                  onClick={() => {
-                                    alert(`edit ${exercise._id}`);
-                                  }}
                                 ></IconButton>
-                              </Box>
+                              </Link> */}
                               <IconButton
                                 icon={<FaTrash />}
                                 aria-label="Delete"
@@ -149,22 +147,43 @@ const Home = () => {
                         )}
                       </Flex>
                       {toggle && (
-                        <Link
-                          to={`/workout/${workout._id}/exercise/${exercise._id}/set`}
-                        >
-                          <Text color="gray.500" fontWeight="semibold">
-                            {exercise.sätze.length > 1
-                              ? `${exercise.sätze.length} Sätze`
-                              : exercise.sätze.length === 0
-                              ? "noch keine Sätze"
-                              : `${exercise.sätze.length} Satz`}
-                          </Text>
-                          <Text color="gray.400">
-                            {exercise.sätze.map((satz) => {
-                              return `  ${satz.gewicht}x${satz.wdh}  `;
-                            })}
-                          </Text>
-                        </Link>
+                        <>
+                          {/* <Text color="gray.500" fontWeight="semibold">
+                        {exercise.sätze.length > 1
+                          ? `${exercise.sätze.length} Sätze`
+                          : exercise.sätze.length === 0
+                          ? "noch keine Sätze"
+                          : `${exercise.sätze.length} Satz`}
+                        </Text> */}
+
+                          {exercise.sätze.length !== 0 ? (
+                            <Flex align="center">
+                              <Text color="gray.400">
+                                {exercise.sätze.map((satz) => {
+                                  return `  ${satz.gewicht}x${satz.wdh}  `;
+                                })}
+                              </Text>
+                              <Link
+                                to={`/workout/${workout._id}/exercise/${exercise._id}/set`}
+                              >
+                                <IconButton
+                                  ml={2}
+                                  icon={<BsPlusCircle />}
+                                  aria-label="add new set"
+                                  colorScheme="blue"
+                                  variant="ghost"
+                                  size="sm"
+                                />
+                              </Link>
+                            </Flex>
+                          ) : (
+                            <Link
+                              to={`/workout/${workout._id}/exercise/${exercise._id}/set`}
+                            >
+                              <Text>Hier klicken um einen Satz einzufügen</Text>
+                            </Link>
+                          )}
+                        </>
                       )}
                     </Box>
                   );

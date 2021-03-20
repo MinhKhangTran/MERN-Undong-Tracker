@@ -100,7 +100,7 @@ const SetForm = () => {
     if (singleSet) {
       setFormData({ gewicht: singleSet.gewicht, wdh: singleSet.wdh });
     }
-  }, [singleSet, formData]);
+  }, [singleSet]);
   return (
     <Box>
       <Heading color="blue.500" fontSize="xl">

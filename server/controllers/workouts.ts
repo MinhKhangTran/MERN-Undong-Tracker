@@ -147,9 +147,28 @@ export const getExerciseById = asyncHandler(
 );
 
 // @desc    update an exercise
-// @route   PUT api/a1/workouts/exercise/:id
+// @route   PUT api/a1/workouts/:workoutId/exercise/:exerciseId
 // @access  private
-
+export const updateExercise = asyncHandler(
+  async (req: Request, res: Response) => {
+    const exercise = await Workout.updateOne(
+      { _id: req.params.workoutId, "exercises._id": req.params.exerciseId },
+      {
+        $set: {
+          "exercises.$.exerciseName": req.body.exerciseName,
+          "exercises.$.exerciseKategory": req.body.exerciseKategory,
+        },
+      }
+    );
+    console.log(exercise);
+    if (exercise) {
+      res.status(200).json(exercise);
+    } else {
+      res.status(400);
+      throw new Error("Es gab ein Fehler beim Ändern der Übung");
+    }
+  }
+);
 // @desc    delete an exercise by id
 // @route   DELETE api/a1/workouts/:workoutId/exercise/:exerciseId
 // @access  private

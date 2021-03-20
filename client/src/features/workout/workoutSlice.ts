@@ -183,6 +183,36 @@ export const addExerciseToWorkout = createAsyncThunk(
     }
   }
 );
+export const getExerciseById = createAsyncThunk(
+  "workout/getExerciseById",
+  async (
+    { workoutId, exerciseId }: { workoutId: string; exerciseId: string },
+    { dispatch, getState, rejectWithValue }
+  ) => {
+    try {
+      const {
+        users: { userInfo },
+      } = getState() as RootState;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo?.token}`,
+        },
+      };
+      const { data } = await axios.get(
+        `/api/a1/workouts/${workoutId}/exercise/${exerciseId}`,
+        config
+      );
+      // console.log(data);
+      return data.exercises.find(
+        (exercise: any) => exercise._id === exerciseId
+      );
+    } catch (error) {
+      // toast
+      dispatch(toastError(error.response.data.message));
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
 export const deleteExercise = createAsyncThunk(
   "workout/deleteExercise",
   async (
@@ -206,6 +236,47 @@ export const deleteExercise = createAsyncThunk(
       console.log(data);
       dispatch(toastSuccess(data.msg));
 
+      return data;
+    } catch (error) {
+      // toast
+      dispatch(toastError(error.response.data.message));
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+export const updateExercise = createAsyncThunk(
+  "workout/updateExercise",
+  async (
+    {
+      workoutId,
+      exerciseId,
+      exerciseName,
+      exerciseKategory,
+    }: {
+      workoutId: string;
+      exerciseId: string;
+      exerciseName: string;
+      exerciseKategory: string;
+    },
+    { dispatch, getState, rejectWithValue }
+  ) => {
+    try {
+      const {
+        users: { userInfo },
+      } = getState() as RootState;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo?.token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `/api/a1/workouts/${workoutId}/exercise/${exerciseId}`,
+        { exerciseName, exerciseKategory },
+        config
+      );
+      // console.log(data);
+      dispatch(toastSuccess("Satz wurde geändert"));
+      dispatch(getAllWorkouts());
       return data;
     } catch (error) {
       // toast
@@ -398,6 +469,7 @@ interface IInitState {
   änderung: boolean;
   singleWorkout: IWorkout | null;
   singleSet: ISatz | null;
+  singleExercise: IExercise | null;
 }
 // init State
 const initialState: IInitState = {
@@ -407,6 +479,7 @@ const initialState: IInitState = {
   änderung: false,
   singleWorkout: null,
   singleSet: null,
+  singleExercise: null,
 };
 
 // Slices
@@ -499,6 +572,19 @@ export const workoutSlice = createSlice({
       state.loading = false;
       state.error = payload;
     });
+    // get exercise by ID
+    builder.addCase(getExerciseById.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(getExerciseById.fulfilled, (state, { payload }) => {
+      state.loading = false;
+      state.error = "";
+      state.singleExercise = payload;
+    });
+    builder.addCase(getExerciseById.rejected, (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    });
     // delete Exercise by ID
     builder.addCase(deleteExercise.pending, (state) => {
       state.loading = true;
@@ -509,6 +595,19 @@ export const workoutSlice = createSlice({
       state.änderung = true;
     });
     builder.addCase(deleteExercise.rejected, (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    });
+    // update Exercise by ID
+    builder.addCase(updateExercise.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(updateExercise.fulfilled, (state) => {
+      state.loading = false;
+      state.error = "";
+      state.änderung = true;
+    });
+    builder.addCase(updateExercise.rejected, (state, { payload }) => {
       state.loading = false;
       state.error = payload;
     });

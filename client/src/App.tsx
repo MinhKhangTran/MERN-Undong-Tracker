@@ -16,6 +16,7 @@ import SetUpdateForm from "./features/exercises/SetUpdateForm";
 import ExerciseCreate from "./features/exercises/ExerciseCreate";
 import { RootState } from "./store";
 import { useSelector } from "react-redux";
+import ExerciseUpdate from "./features/exercises/ExerciseUpdate";
 
 interface IRoute {
   path: string;
@@ -77,6 +78,12 @@ const routes: IRoute[] = [
     path: "/exercise/create",
     exact: true,
     component: ExerciseCreate,
+    private: true,
+  },
+  {
+    path: "/workout/:workoutId/exercise/:exerciseId/update",
+    exact: true,
+    component: ExerciseUpdate,
     private: true,
   },
   {

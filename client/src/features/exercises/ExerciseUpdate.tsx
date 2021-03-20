@@ -13,16 +13,27 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { IoMdAdd } from "react-icons/io";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createExercise, getExercises } from "./exerciseSlice";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
+import { getExerciseById, updateExercise } from "../workout/workoutSlice";
+import { RootState } from "../../store";
 
-const ExerciseCreate = () => {
+const ExerciseUpdate = () => {
+  interface IParams {
+    workoutId: string;
+    exerciseId: string;
+  }
+  const { workoutId, exerciseId } = useParams<IParams>();
   const dispatch = useDispatch();
   const history = useHistory();
+  const [formData, setFormData] = React.useState({ name: "", category: "" });
+  const { singleExercise } = useSelector((state: RootState) => state.workout);
+  const { exerciseInfo } = useSelector((state: RootState) => state.exercise);
 
   const formik = useFormik({
-    initialValues: { name: "", category: "" },
+    enableReinitialize: true,
+    initialValues: formData,
     validationSchema: Yup.object({
       name: Yup.string().required("Eine Übung ist nötig"),
       category: Yup.string()
@@ -39,7 +50,14 @@ const ExerciseCreate = () => {
     }),
     onSubmit: (daten, { resetForm }) => {
       //   console.log(daten);
-      dispatch(createExercise(daten));
+      dispatch(
+        updateExercise({
+          workoutId,
+          exerciseId,
+          exerciseName: daten.name,
+          exerciseKategory: daten.category,
+        })
+      );
       dispatch(getExercises());
 
       resetForm();
@@ -55,11 +73,26 @@ const ExerciseCreate = () => {
     "Rücken",
     "Unterer Rücken",
   ];
+  //   get single exercise
+  React.useEffect(() => {
+    dispatch(getExerciseById({ workoutId, exerciseId }));
+    dispatch(getExercises());
+  }, [dispatch, workoutId, exerciseId]);
+  //   set formdata
+  React.useEffect(() => {
+    if (singleExercise) {
+      //   console.log(singleExercise);
+      setFormData({
+        name: singleExercise.exerciseName,
+        category: singleExercise.exerciseKategory,
+      });
+    }
+  }, [singleExercise]);
 
   return (
     <Box>
       <Heading color="blue.500" fontSize="xl">
-        Neue Übung erstellen und passende Kategorie wählen
+        Übung ändern und passende Kategorie wählen
       </Heading>
       <Box mt={6}>
         <form onSubmit={formik.handleSubmit}>
@@ -69,7 +102,18 @@ const ExerciseCreate = () => {
           >
             <FormLabel>Übungsname</FormLabel>
 
-            <Input {...formik.getFieldProps("name")} mt={6}></Input>
+            <Select
+              placeholder={formData.name}
+              {...formik.getFieldProps("exerciseName")}
+            >
+              {exerciseInfo?.map((exercise) => {
+                return (
+                  <option key={exercise._id} value={exercise.name}>
+                    {exercise.name}
+                  </option>
+                );
+              })}
+            </Select>
             <FormErrorMessage>{formik.errors.name}</FormErrorMessage>
           </FormControl>
           <FormControl
@@ -90,17 +134,12 @@ const ExerciseCreate = () => {
             <FormErrorMessage>{formik.errors.category}</FormErrorMessage>
           </FormControl>
 
-          <Button
-            type="submit"
-            mt={8}
-            leftIcon={<IoMdAdd />}
-            colorScheme="blue"
-          >
-            Erstellen
+          <Button type="submit" mt={8} colorScheme="blue">
+            Ändern
           </Button>
         </form>
       </Box>
     </Box>
   );
 };
-export default ExerciseCreate;
+export default ExerciseUpdate;

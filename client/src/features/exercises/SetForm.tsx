@@ -192,7 +192,7 @@ const SetForm = () => {
         </form>
       </Box>
       <Box mt={12}>
-        <Table variant="simple">
+        <Table size="sm" variant="simple">
           <TableCaption>Satzüberblick</TableCaption>
           <Thead>
             <Tr>

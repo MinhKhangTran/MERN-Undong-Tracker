@@ -13,6 +13,7 @@ import {
   getAllExercises,
   getExerciseById,
   deleteExercise,
+  updateExercise,
   // Set controller
   addSet,
   deleteSet,
@@ -47,7 +48,8 @@ router.route("/exercises").get(protect, getAllExercises);
 router
   .route("/:workoutId/exercise/:exerciseId")
   .get(protect, getExerciseById)
-  .delete(protect, deleteExercise);
+  .delete(protect, deleteExercise)
+  .put(protect, updateExercise);
 // Set
 
 // add set to an exercise
