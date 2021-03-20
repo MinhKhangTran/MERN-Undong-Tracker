@@ -3,6 +3,7 @@ import morgan from "morgan";
 import cors from "cors";
 import colors from "colors";
 import User from "./models/User";
+import path from "path";
 
 // Routes
 import userRoutes from "./routes/users";
@@ -44,6 +45,18 @@ app.use("/api/a1/users", userRoutes);
 app.use("/api/a1/exercises", exerciseRoutes);
 app.use("/api/a1/workouts", workoutRoutes);
 
+// for deploying
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/client/build")));
+
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"))
+  );
+} else {
+  app.get("/", (req, res) => {
+    res.send("API is running....");
+  });
+}
 // Error Middlewares
 app.use(notFound);
 app.use(errorHandler);
