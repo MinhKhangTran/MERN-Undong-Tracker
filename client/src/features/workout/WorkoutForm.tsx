@@ -11,10 +11,9 @@ import {
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { IoMdAdd } from "react-icons/io";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { createWorkout } from "./workoutSlice";
 import { useHistory } from "react-router-dom";
-import { RootState } from "../../store";
 
 // Add workout form ausfüllen
 // if sucessfully added dann neue Form mit useState
@@ -30,10 +29,9 @@ import { RootState } from "../../store";
 // am ende sollte ein workout rauskommen wie im model definiert
 
 const WorkoutForm = () => {
-  const [addedWorkout, setAddedWorkout] = React.useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
-  const { workoutInfo } = useSelector((state: RootState) => state.workout);
+
   const formik = useFormik({
     initialValues: { name: "" },
     validationSchema: Yup.object({

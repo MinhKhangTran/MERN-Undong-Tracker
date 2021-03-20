@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { string } from "yup/lib/locale";
+
 import { RootState } from "../../store";
 import { toastError, toastSuccess } from "../toast/toastSlice";
 axios.defaults.headers.post["Content-Type"] = "application/json";

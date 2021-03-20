@@ -8,18 +8,14 @@ import {
   FormErrorMessage,
   Button,
   Select,
-  ButtonGroup,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { IoMdAdd } from "react-icons/io";
-import { IoCreateOutline } from "react-icons/io5";
-import { useSelector, useDispatch } from "react-redux";
-import { createExercise, getExercises, TCategory } from "./exerciseSlice";
-import { useHistory, Link } from "react-router-dom";
-import { RootState } from "../../store";
-import { addExerciseToWorkout } from "../workout/workoutSlice";
-import { toastError } from "../toast/toastSlice";
+
+import { useDispatch } from "react-redux";
+import { createExercise, getExercises } from "./exerciseSlice";
+import { useHistory } from "react-router-dom";
 
 const ExerciseForm = () => {
   const dispatch = useDispatch();

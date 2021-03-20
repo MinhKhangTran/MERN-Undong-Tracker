@@ -1,32 +1,17 @@
 import * as React from "react";
 import {
-  Badge,
   Box,
   Button,
-  ButtonGroup,
   Flex,
   Heading,
-  IconButton,
   Spacer,
   Spinner,
   Text,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuIcon,
-  MenuCommand,
-  MenuDivider,
-  Icon,
-  Divider,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
-import { clearState, getAllWorkouts } from "../features/workout/workoutSlice";
+import { getAllWorkouts } from "../features/workout/workoutSlice";
 import Moment from "react-moment";
 import "moment/locale/de";
 

@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { IoMdAdd } from "react-icons/io";
+
 import { useSelector, useDispatch } from "react-redux";
 import { getWorkoutById, updateWorkout } from "./workoutSlice";
 import { useHistory, useParams } from "react-router-dom";

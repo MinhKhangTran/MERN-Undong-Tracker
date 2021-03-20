@@ -33,7 +33,7 @@ const Layout: React.FC = ({ children }) => {
   const history = useHistory();
   React.useEffect(() => {
     dispatch(clearState());
-  }, [änderung]);
+  }, [änderung, dispatch]);
   React.useEffect(() => {
     if (type === "success") {
       toast({

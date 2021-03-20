@@ -7,39 +7,23 @@ import {
   Input,
   FormErrorMessage,
   Button,
-  Select,
-  InputGroup,
-  InputRightAddon,
   Text,
-  Flex,
-  IconButton,
-  Spacer,
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
   TableCaption,
-  ButtonGroup,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { IoMdAdd } from "react-icons/io";
+
 import { useSelector, useDispatch } from "react-redux";
-import { getExercises } from "./exerciseSlice";
-import { useHistory, useParams, Link } from "react-router-dom";
+
+import { useHistory, useParams } from "react-router-dom";
 import { RootState } from "../../store";
-import {
-  addSetExercise,
-  getAllWorkouts,
-  deleteSet,
-  getWorkoutById,
-  getSetById,
-  updateSet,
-} from "../workout/workoutSlice";
-import { FaEdit, FaMinus, FaPlus, FaTrash } from "react-icons/fa";
+import { getAllWorkouts, getSetById, updateSet } from "../workout/workoutSlice";
 
 const SetForm = () => {
   interface IParams {
@@ -115,9 +99,8 @@ const SetForm = () => {
   React.useEffect(() => {
     if (singleSet) {
       setFormData({ gewicht: singleSet.gewicht, wdh: singleSet.wdh });
-      console.log(formData);
     }
-  }, [singleSet]);
+  }, [singleSet, formData]);
   return (
     <Box>
       <Heading color="blue.500" fontSize="xl">

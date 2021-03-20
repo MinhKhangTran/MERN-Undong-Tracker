@@ -39,7 +39,7 @@ const ExerciseForm = () => {
     id: string;
   }
   const { id } = useParams<IParams>();
-  const [addedExercise, setAddedExercise] = React.useState(false);
+
   const dispatch = useDispatch();
   const history = useHistory();
   const { exerciseInfo } = useSelector((state: RootState) => state.exercise);
@@ -94,7 +94,7 @@ const ExerciseForm = () => {
     if (änderung) {
       history.push("/");
     }
-  }, [änderung]);
+  }, [änderung, history]);
   return (
     <Box>
       <Heading color="blue.500" fontSize="xl">

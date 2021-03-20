@@ -17,7 +17,6 @@ import { IWorkout, deleteWorkout } from "../features/workout/workoutSlice";
 
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import ModalComponent from "./ModalComponent";
 
 const MenuComponent = ({ workout }: { workout: IWorkout }) => {
   const dispatch = useDispatch();

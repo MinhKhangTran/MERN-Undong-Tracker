@@ -7,17 +7,11 @@ import {
   Input,
   FormErrorMessage,
   Button,
-  Select,
-  InputGroup,
-  InputRightAddon,
   Text,
-  Flex,
   IconButton,
-  Spacer,
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
@@ -28,16 +22,15 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { IoMdAdd } from "react-icons/io";
 import { useSelector, useDispatch } from "react-redux";
-import { getExercises } from "./exerciseSlice";
+
 import { useHistory, useParams, Link } from "react-router-dom";
 import { RootState } from "../../store";
 import {
   addSetExercise,
   getAllWorkouts,
   deleteSet,
-  getWorkoutById,
 } from "../workout/workoutSlice";
-import { FaEdit, FaMinus, FaPlus, FaTrash } from "react-icons/fa";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 const SetForm = () => {
   interface IParams {
