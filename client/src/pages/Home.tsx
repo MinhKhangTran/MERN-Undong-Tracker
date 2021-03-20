@@ -2,8 +2,10 @@ import * as React from "react";
 import {
   Box,
   Button,
+  ButtonGroup,
   Flex,
   Heading,
+  IconButton,
   Spacer,
   Spinner,
   Text,
@@ -11,11 +13,15 @@ import {
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
-import { getAllWorkouts } from "../features/workout/workoutSlice";
+import {
+  deleteExercise,
+  getAllWorkouts,
+} from "../features/workout/workoutSlice";
 import Moment from "react-moment";
 import "moment/locale/de";
 
 import MenuComponent from "../components/MenuComponent";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 const Home = () => {
   const [toggle, setToggle] = React.useState(true);
@@ -102,6 +108,45 @@ const Home = () => {
                         >
                           {exercise.exerciseName}
                         </Text>
+
+                        {!toggle && (
+                          <>
+                            <Spacer />
+                            <ButtonGroup>
+                              <Box
+                              // to={`/workout/${workoutId}/exercise/${id}/set/${satz._id}`}
+                              >
+                                <IconButton
+                                  icon={<FaEdit />}
+                                  aria-label="Edit"
+                                  variant="ghost"
+                                  colorScheme="green"
+                                  cursor="pointer"
+                                  onClick={() => {
+                                    alert(`edit ${exercise._id}`);
+                                  }}
+                                ></IconButton>
+                              </Box>
+                              <IconButton
+                                icon={<FaTrash />}
+                                aria-label="Delete"
+                                variant="ghost"
+                                colorScheme="red"
+                                cursor="pointer"
+                                onClick={() => {
+                                  if (window.confirm("Bist du sicher?")) {
+                                    dispatch(
+                                      deleteExercise({
+                                        workoutId: workout._id,
+                                        exerciseId: exercise._id,
+                                      })
+                                    );
+                                  }
+                                }}
+                              ></IconButton>
+                            </ButtonGroup>
+                          </>
+                        )}
                       </Flex>
                       {toggle && (
                         <Link

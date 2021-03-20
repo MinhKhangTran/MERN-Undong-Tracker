@@ -129,16 +129,45 @@ export const getAllExercises = asyncHandler(
 );
 
 // @desc    get a exercise by ID
-// @route   GET api/a1/workouts/exercise/:id
+// @route   GET api/a1/workouts/:workoutId/exercise/:exerciseId
 // @access  private
+export const getExerciseById = asyncHandler(
+  async (req: Request, res: Response) => {
+    const exercise = await Workout.findOne({
+      _id: req.params.workoutId,
+      "exercises._id": req.params.exerciseId,
+    });
+    if (exercise) {
+      res.status(200).json(exercise);
+    } else {
+      res.status(400);
+      throw new Error("Es gab ein Fehler beim Fetchen der Übung");
+    }
+  }
+);
 
 // @desc    update an exercise
 // @route   PUT api/a1/workouts/exercise/:id
 // @access  private
 
 // @desc    delete an exercise by id
-// @route   DELETE api/a1/workouts/exercise/:id
+// @route   DELETE api/a1/workouts/:workoutId/exercise/:exerciseId
 // @access  private
+export const deleteExercise = asyncHandler(
+  async (req: Request, res: Response) => {
+    const exercise = await Workout.updateOne(
+      { _id: req.params.workoutId },
+      { $pull: { exercises: { _id: req.params.exerciseId } } }
+    );
+    console.log(exercise);
+    if (exercise) {
+      res.status(200).json(exercise);
+    } else {
+      res.status(400);
+      throw new Error("Es gab ein Fehler beim Löschen der Übung");
+    }
+  }
+);
 
 // ===================================================================
 // ==========================Set======================================

@@ -183,6 +183,37 @@ export const addExerciseToWorkout = createAsyncThunk(
     }
   }
 );
+export const deleteExercise = createAsyncThunk(
+  "workout/deleteExercise",
+  async (
+    { workoutId, exerciseId }: { workoutId: string; exerciseId: string },
+    { dispatch, getState, rejectWithValue }
+  ) => {
+    try {
+      const {
+        users: { userInfo },
+      } = getState() as RootState;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo?.token}`,
+        },
+      };
+      const { data } = await axios.delete(
+        `/api/a1/workouts/${workoutId}/exercise/${exerciseId}`,
+
+        config
+      );
+      console.log(data);
+      dispatch(toastSuccess(data.msg));
+
+      return data;
+    } catch (error) {
+      // toast
+      dispatch(toastError(error.response.data.message));
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
 // ===================================================================
 // ==========================SET======================================
 // ===================================================================
@@ -465,6 +496,19 @@ export const workoutSlice = createSlice({
       state.änderung = true;
     });
     builder.addCase(addExerciseToWorkout.rejected, (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    });
+    // delete Exercise by ID
+    builder.addCase(deleteExercise.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(deleteExercise.fulfilled, (state) => {
+      state.loading = false;
+      state.error = "";
+      state.änderung = true;
+    });
+    builder.addCase(deleteExercise.rejected, (state, { payload }) => {
       state.loading = false;
       state.error = payload;
     });
