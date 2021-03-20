@@ -11,8 +11,7 @@ The frontend was made with react, redux toolkit, typescript and chakra UI. The w
   
 Because I am looking for such an App I created this App. I have more ideas for this project but I need more practice. Maybe I will maintain it and update it in the near future 
   
-
-  
+### :point_right: [DEMO](https://undong-tracker.herokuapp.com/) :rocket:  
 
   
 ## :hammer: Technologies & Tools  
