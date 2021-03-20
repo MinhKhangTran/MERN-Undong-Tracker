@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import morgan from "morgan";
 import cors from "cors";
 import colors from "colors";
@@ -31,14 +31,14 @@ if (process.env.NODE_ENV === "development") {
 }
 
 // Testing
-app.get("/", async (req, res) => {
-  try {
-    const users = await User.find({});
-    res.status(200).json(users);
-  } catch (error) {
-    console.log(error);
-  }
-});
+// app.get("/", async (req: Request, res: Response) => {
+//   try {
+//     const users = await User.find({});
+//     res.status(200).json(users);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
 
 // Routing
 app.use("/api/a1/users", userRoutes);
@@ -49,11 +49,11 @@ app.use("/api/a1/workouts", workoutRoutes);
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "/client/build")));
 
-  app.get("*", (req, res) =>
+  app.get("*", (req: Request, res: Response) =>
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"))
   );
 } else {
-  app.get("/", (req, res) => {
+  app.get("/", (req: Request, res: Response) => {
     res.send("API is running....");
   });
 }
