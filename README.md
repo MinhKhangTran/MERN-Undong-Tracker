@@ -10,6 +10,8 @@ The backend used technologies like node, express, mongoose and some validation a
 The frontend was made with react, redux toolkit, typescript and chakra UI. The workoutSlice file is just big. I have to look how i can reduce it.
   
 Because I am looking for such an App I created this App. I have more ideas for this project but I need more practice. Maybe I will maintain it and update it in the near future 
+
+### :point_right: [DEMO](https://undong-tracker.netlify.app) :rocket:  
   
 
 
